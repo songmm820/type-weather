@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    qing_glass_lib::run()
+    type_weather_lib::run()
 }

@@ -1,5 +1,5 @@
 [package]
-name = "qing_glass"
+name = "type_weather"
 version = "1.0.0"
 description = "把天气画在桌面这块画布上，让每一天都有独一无二的风景。"
 authors = ["songmm"]
@@ -11,7 +11,7 @@ edition = "2021"
 # The `_lib` suffix may seem redundant but it is necessary
 # to make the lib name unique and wouldn't conflict with the bin name.
 # This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
-name = "qing_glass_lib"
+name = "type_weather_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
