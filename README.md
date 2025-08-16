@@ -61,4 +61,5 @@ TypeWeather（情绪玻璃）是一款基于 **Tauri + React + TypeScript** 的�
 `pnpm tauri build`       # 生成 .msi / .dmg / AppImage   # 构建发行版
 
 `git tag v1.0.5`    # 构建版本标签
+`git checkout v1.0.5` # 切换到版本标签
 `git push origin v1.0.5`    # 推送版本标签，会自动触发github action的构建工作流，并上传产物。
