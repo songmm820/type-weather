@@ -1,0 +1,51 @@
+/**
+ * 高德地图api请求
+ */
+
+import { AxiosClientClass } from '~/network/RequestConfig.ts'
+import { AmapWebApiIpResponse, AmapWebApiResponse, AmapWebApiWeatherRequestParams, AmapWebApiWeatherResponse } from '~/apis/amap/AmapTypes.ts'
+
+/** WebApi Key */
+const WEB_API_KEY = import.meta.env.VITE_APP_MAP_KEY
+
+export const amapWebApiInstance = new AxiosClientClass<AmapWebApiResponse>({
+    baseURL: 'https://restapi.amap.com/v3',
+    timeout: 50000,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+
+/**
+ * IP 定位城市
+ *
+ * @see https://lbs.amap.com/api/webservice/guide/api/ipconfig
+ *
+ * @param ip ip地址
+ */
+export function getLocationByIp(ip?: string) {
+    const params = {
+        key: WEB_API_KEY,
+        ip: ip
+    }
+    return amapWebApiInstance.get<{ ip?: string }, AmapWebApiResponse & AmapWebApiIpResponse>('/ip', params)
+}
+
+/**
+ * 获取天气信息
+ *
+ * @see https://lbs.amap.com/api/webservice/guide/api/weatherinfo
+ *
+ * @param adCode 城市行政区划编码
+ * @param extensions 气象类型 base: 实况天气， all：预测天气
+ */
+export function getWeatherInfoByAdCode(adCode: string, extensions: 'base' | 'all' = 'base') {
+    const params: AmapWebApiWeatherRequestParams = {
+        key: WEB_API_KEY,
+        city: adCode,
+        extensions: extensions
+    }
+    return amapWebApiInstance.get<AmapWebApiWeatherRequestParams, AmapWebApiResponse & AmapWebApiWeatherResponse>('/weather/weatherInfo', params)
+}
+
+
