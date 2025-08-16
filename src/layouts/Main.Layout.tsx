@@ -43,7 +43,7 @@ const MainLayout = () => {
                 <div className="h-full flex-1 flex items-center gap-2">
                     {systemOsCtx && systemOsCtx?.systemTime.length > 0 && (
                         <div>
-                            {systemOsCtx?.systemTime[4]}:{systemOsCtx?.systemTime[5]}
+                            {systemOsCtx?.systemTime[3]}:{systemOsCtx?.systemTime[4]}
                         </div>
                     )}
                     {geoLocationCtx?.city && <div className="text-sm">{geoLocationCtx?.city}</div>}
