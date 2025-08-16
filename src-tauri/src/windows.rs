@@ -8,7 +8,7 @@ where
 {
 
     let win_builder = WebviewWindowBuilder::new(manager, "main", WebviewUrl::default())
-        .inner_size(1200.0, 800.0)
+        .inner_size(1200.0, 700.0)
         .min_inner_size(700.0, 700.0)
         .decorations(true)
         .shadow(false)

@@ -19,7 +19,7 @@ const SearchIndex = ({ onInput, onLinkToDetail }: { onInput: (e: ChangeEvent<HTM
                                 <span>Boas vindas ao</span>
                                 <span className="text-self">TypeWeather</span>
                             </div>
-                            <div className="text-2xl text-center">Escolha um local para ver a previsão do tempo</div>
+                            <div className="text-2xl text-center">择一处佳境，静候天时</div>
                         </div>
                     </div>
                     <div className="mt-16 w-full flex items-center justify-center">
