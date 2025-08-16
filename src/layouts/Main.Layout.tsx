@@ -5,12 +5,14 @@ import IconPark from '~/conponents/IconPark.tsx'
 import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { useWeather } from '~/hooks/useWeather.ts'
+import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
 
 const MainLayout = () => {
     const navigate = useNavigate()
     const location = useLocation()
-    const geoLocation = useGeographicLocation()
-    const weather = useWeather()
+    const geoLocationCtx = useGeographicLocation()
+    const weatherCtx = useWeather()
+    const systemOsCtx = useSystemOSInfo()
 
     // 判断当前是否还可以返回
     const isCanBack = () => {
@@ -28,8 +30,6 @@ const MainLayout = () => {
         navigate(RouterConstantsEnum.SYSTEM_SETTING)
     }
 
-    // 获取当前城市信息
-
     return (
         <div className="h-full flex flex-col" style={{ backgroundImage: `url(${bg})` }}>
             {/* 路由页面渲染区域 */}
@@ -41,8 +41,13 @@ const MainLayout = () => {
             <nav className="bg-[#131319] h-10 flex justify-end py-1.5 px-6">
                 {/* 左侧导航栏 */}
                 <div className="h-full flex-1 flex items-center gap-2">
-                    {geoLocation?.city && <div className="text-sm">{geoLocation?.city}</div>}
-                    {weather?.temperature && <div className="text-sm">{weather?.temperature}°</div>}
+                    {systemOsCtx && systemOsCtx?.systemTime.length > 0 && (
+                        <div>
+                            {systemOsCtx?.systemTime[4]}:{systemOsCtx?.systemTime[5]}
+                        </div>
+                    )}
+                    {geoLocationCtx?.city && <div className="text-sm">{geoLocationCtx?.city}</div>}
+                    {weatherCtx?.temperature && <div className="text-sm">{weatherCtx?.temperature}°</div>}
                 </div>
 
                 {/* 右侧导航栏 */}

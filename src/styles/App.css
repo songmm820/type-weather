@@ -39,10 +39,14 @@
     --text-small: 12px;
     --text-base: 14px;
     --text-large: 16px;
+    --text-xxlarge: 17px;
     --text-xlarge: 18px;
     --text-2xl: 20px;
     --text-3xl: 24px;
     --text-4xl: 32px;
+    --text-5xl: 40px;
+    --text-6xl: 48px;
+    --text-7xl: 52px;
 
     /** 响应式断点 */
     --breakpoint-phone: 36rem;

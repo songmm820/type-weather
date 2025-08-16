@@ -1,7 +1,7 @@
 mod invoke_command;
 mod windows;
 
-use crate::invoke_command::ping;
+use crate::invoke_command::{ping, spawn_clock};
 use crate::windows::create_main_window;
 
 use tauri::Manager;
@@ -26,6 +26,7 @@ pub fn run() {
     builder = builder.setup(|app| {
         // 为第一个实例创建窗口
         create_main_window(app);
+        spawn_clock(app.handle().clone());
         #[cfg(desktop)]
         app.handle()
             .plugin(tauri_plugin_updater::Builder::new().build())?;

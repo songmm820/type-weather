@@ -27,6 +27,7 @@ export const useSystemOSInfo = (): SystemOSInfoHookType => {
         locale: context.locale,
         hostname: context.hostname,
         appVersion: context.appVersion,
+        systemTime: context.systemTime,
         onGetSystemOSInfo: context.onGetSystemOSInfo
     }
 }

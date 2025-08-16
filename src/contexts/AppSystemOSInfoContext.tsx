@@ -4,6 +4,7 @@
 
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { getCurrentVersion, getOsInfo } from '~/libs/OsLib.ts'
+import { listen } from '@tauri-apps/api/event'
 
 /** 系统信息类型 */
 export type AppSystemOSInfoType = {
@@ -23,6 +24,8 @@ export type AppSystemOSInfoType = {
     hostname: string | null
     /** 应用版本号 */
     appVersion: string
+    /** 系统时间 */
+    systemTime: string[]
 }
 
 /** 系统信息上下文类型 */
@@ -36,19 +39,28 @@ export const AppSystemOSInfoContext = createContext<AppSystemOSInfoContext | nul
 // 创建系统信息提供者组件
 export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => {
     // 获取系统信息
-    const [systemInfo, setSystemInfo] = useState<Omit<AppSystemOSInfoContext, 'onGetSystemOSInfo'> | null>(null)
+    const [systemInfo, setSystemInfo] = useState<Omit<AppSystemOSInfoContext, 'onGetSystemOSInfo' | 'systemTime'> | null>(null)
+    // 实时时间
+    const [systemTime, setSystemTime] = useState<string[]>([])
 
-    /** 获取系统信息 */
+    // 获取系统信息
     const onGetSystemOSInfo = async () => {
         const { osType, platform, family, version, arch, locale, hostname } = await getOsInfo()
         const appVersion = await getCurrentVersion()
-        setSystemInfo({ osType, platform, family, version, arch, locale, hostname,appVersion })
+        setSystemInfo({ osType, platform, family, version, arch, locale, hostname, appVersion })
     }
 
     // 初始化获取系统信息
     useEffect(() => {
+        const unlisten = listen<string[]>('time-update', (event) => {
+            setSystemTime(event.payload)
+        })
         onGetSystemOSInfo().then()
+
+        return () => {
+            unlisten.then((fn) => fn?.())
+        }
     }, [])
 
-    return <AppSystemOSInfoContext.Provider value={systemInfo ? { ...systemInfo, onGetSystemOSInfo } : null}>{children}</AppSystemOSInfoContext.Provider>
+    return <AppSystemOSInfoContext.Provider value={systemInfo ? { ...systemInfo, systemTime, onGetSystemOSInfo } : null}>{children}</AppSystemOSInfoContext.Provider>
 }
