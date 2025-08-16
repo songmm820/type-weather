@@ -7,7 +7,7 @@
 
 ## 🚀 项目简介
 <p>
-QingGlass（情绪玻璃）是一款基于 **Tauri + React + TypeScript** 的跨平台桌面应用。<br/>
+TypeWeather（情绪玻璃）是一款基于 **Tauri + React + TypeScript** 的跨平台桌面应用。<br/>
 它将实时天气数据转化为可视、可交互、可回忆的桌面体验：毛玻璃雨滴、阳光色温条、桌面小宠物、番茄钟、节能提醒、远程办公预警……一年后“时间胶囊”告诉你去年今天的天气与心情。<br/>
 零后端、一键安装、插件化架构，支持 Windows / macOS / Linux。
 </p>
