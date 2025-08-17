@@ -59,10 +59,12 @@ const MainLayout = () => {
                         </div>
                     )}
 
-                    <div className="cursor-pointer h-full t-f-center rounded-sm px-2 py-1 t-f-center gap-1" onClick={onSetting}>
-                        <IconPark icon="setting-two" size={15} />
-                        <span className="text-small">设置</span>
-                    </div>
+                    {location.pathname !== RouterConstantsEnum.SYSTEM_SETTING && (
+                        <div className="cursor-pointer h-full t-f-center rounded-sm px-2 py-1 t-f-center gap-1" onClick={onSetting}>
+                            <IconPark icon="setting-two" size={15} />
+                            <span className="text-small">设置</span>
+                        </div>
+                    )}
                 </div>
             </nav>
         </div>
