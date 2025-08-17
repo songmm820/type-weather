@@ -48,9 +48,7 @@ export default [
         languageOptions: {
             globals: {
                 ...globals.browser,
-                ...globals.node,
-                // 添加自定义的全局变量
-                Tools: 'readonly'
+                ...globals.node
             }
         }
     }

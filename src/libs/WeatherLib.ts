@@ -2,6 +2,15 @@
  * 天气工具类
  */
 
+// 晴天多云白天
+import sunnyCloudyLight from '~/assets/weather/light/light_cloudy.png'
+// 阴天白天
+import overcastLight from '~/assets/weather/light/light_overcast .png'
+// 晴天多云夜晚
+import sunnyCloudyNight from '~/assets/weather/night/night_cloudy.png'
+// 阴天夜晚
+import overcastNight from '~/assets/weather/night/night_overcast.png'
+
 /** 天气状态枚举 */
 export enum WeatherStatusEnum {
     /** 晴多云 */
@@ -129,4 +138,17 @@ export function getSeasonByMonth(month: number): SeasonEnum {
     if (month >= 9 && month <= 11) return SeasonEnum.AUTUMN
     if (month === 12 || month === 1 || month === 2) return SeasonEnum.WINTER
     return SeasonEnum.SPRING
+}
+
+/**
+ * 根据当前时间、天气获取当前对应背景
+ *
+ * @param hour 当前时间（时）
+ * @param weatherList 天气列表
+ */
+export function getBackgroundByTime(hour: number, weatherList: WeatherStatusEnum[]) {
+    const isNight = hour <= 6 || hour >= 18 // 顺序调换，可读性更好
+    const isRain = weatherList.some((w) => w === WeatherStatusEnum.RAIN || w === WeatherStatusEnum.OVERCAST)
+
+    return isNight ? (isRain ? overcastNight : sunnyCloudyNight) : isRain ? overcastLight : sunnyCloudyLight
 }

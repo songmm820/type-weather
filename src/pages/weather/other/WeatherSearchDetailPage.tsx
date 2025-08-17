@@ -3,7 +3,6 @@
  */
 import Logo from '~/pages/weather/other/WeatherLogo.tsx'
 import WeatherSearchInput from '~/pages/weather/other/WeatherSearchInput.tsx'
-import night_bg from '~/assets/weather/night_bg.png'
 import classNames from 'classnames'
 import WeatherCardContainer from '~/pages/weather/other/WeatherCardContainer.tsx'
 import { useWeather } from '~/hooks/useWeather.ts'
@@ -11,6 +10,9 @@ import { useMemo } from 'react'
 import IconPark from '~/conponents/IconPark.tsx'
 import { customDayjs } from '~/libs/DateTimeLib.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
+import { getBackgroundByTime, getWeatherStatus } from '~/libs/WeatherLib.ts'
+import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
+import { useSearchParams } from 'react-router-dom'
 
 type WeatherDetail = {
     icon: string
@@ -20,8 +22,30 @@ type WeatherDetail = {
 }
 
 const WeatherSearchDetailPage = () => {
+    // 获取系统实时时间
+    const systemOsCtx = useSystemOSInfo()
     const geoLocationCtx = useGeographicLocation()
     const weatherCtx = useWeather()
+    const [search] = useSearchParams()
+
+    // 获取路由source字段
+    const source = search.get('source') || ('self' as string)
+
+    // 计算当前天气背景
+    const curBackground = useMemo(() => {
+        // 获取天气
+        const weatherText = weatherCtx?.weather
+        // 获取温度
+        const temperature = weatherCtx?.temperature
+        // 获取风力
+        const windpower = weatherCtx?.windpower as '<=3' | number
+        if (!weatherText || !temperature || !windpower || systemOsCtx?.systemTime?.length === 0) return
+
+        const weathers = getWeatherStatus(weatherText, Number(temperature), windpower)
+        const hour = systemOsCtx?.systemTime[3]
+        if (!hour) return
+        return getBackgroundByTime(Number(hour), weathers)
+    }, [systemOsCtx?.systemTime[3], weatherCtx?.weather, weatherCtx?.temperature, weatherCtx?.windpower])
 
     // 获取当前日期（年月日星期）
     const currentDateAndWeek = useMemo(() => {
@@ -37,6 +61,8 @@ const WeatherSearchDetailPage = () => {
 
     // 今日天气详情维度
     const todayWeatherDetailsDimension = useMemo<WeatherDetail[]>(() => {
+        if (!source) return []
+        // 如果是获取当前定位城市
         const { temperature, humidity, windDirection, windpower } = weatherCtx ?? {}
         return [
             { icon: 'temperature', label: '体感温度', value: temperature ?? '', unit: '°c' },
@@ -44,7 +70,7 @@ const WeatherSearchDetailPage = () => {
             { icon: 'wind', label: '风向', value: windDirection ?? '' },
             { icon: 'wind-rate', label: '风力等级', value: windpower ?? '' }
         ]
-    }, [weatherCtx?.temperature, weatherCtx?.humidity, weatherCtx?.windDirection, weatherCtx?.windpower])
+    }, [source, weatherCtx?.temperature, weatherCtx?.humidity, weatherCtx?.windDirection, weatherCtx?.windpower])
 
     return (
         <div className="w-full h-full flex gap-6 p-4.5">
@@ -54,21 +80,23 @@ const WeatherSearchDetailPage = () => {
                     <WeatherSearchInput />
                 </div>
                 <div className="mt-4 flex-1 h-full relative">
-                    <div className="p-8 w-full h-full rounded-lg bg-no-repeat bg-cover" style={{ backgroundImage: `url(${night_bg})` }}>
-                        <div className="h-full flex flex-col justify-between">
-                            <div className="flex flex-col">
-                                <div className="text-[#fafafa] text-2xl">{geoLocationCtx?.city}</div>
-                                <div className="mt-2 text-base">
-                                    {currentDateAndWeek.date}, {currentDateAndWeek.week}
+                    {curBackground && (
+                        <div className="p-8 w-full h-full rounded-lg bg-no-repeat bg-cover" style={{ backgroundImage: `url(${curBackground})` }}>
+                            <div className="h-full flex flex-col justify-between">
+                                <div className="flex flex-col">
+                                    <div className="text-[#fafafa] text-2xl">{geoLocationCtx?.city}</div>
+                                    <div className="mt-2 text-base">
+                                        {currentDateAndWeek.date}, {currentDateAndWeek.week}
+                                    </div>
+                                </div>
+
+                                <div className="w-full flex justify-between items-center">
+                                    {weatherCtx?.temperature && <div className="text-white font-semibold text-7xl">{weatherCtx?.temperature}°c</div>}
+                                    <div>123</div>
                                 </div>
                             </div>
-
-                            <div className="w-full flex justify-between items-center">
-                                {weatherCtx?.temperature && <div className='text-white font-semibold text-7xl'>{weatherCtx?.temperature}°c</div>}
-                                <div>123</div>
-                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
             <div className="w-1/2 h-full flex flex-col gap-6">
@@ -76,27 +104,30 @@ const WeatherSearchDetailPage = () => {
                     label="今日天气详情"
                     desc={
                         <div className="text-small">
-                            <span>观测时间：</span>
-                            <span>{customDayjs(weatherCtx?.reportTime).format('MM-DD HH:mm')}</span>
+                            <span>{customDayjs(weatherCtx?.reportTime).format('MM-DD HH:mm')}&nbsp;发布</span>
                         </div>
                     }
                 >
                     <div className="flex-1 flex flex-col justify-center">
-                        {todayWeatherDetailsDimension.map((item, index) => (
-                            <div
-                                key={index}
-                                className={classNames('flex items-center justify-between gap-2', index != todayWeatherDetailsDimension.length - 1 && 'border-b border-[#1c1c27] ')}
-                            >
-                                <div className="flex items-center gap-4">
-                                    <IconPark icon={item.icon} size={26} />
-                                    <div className="py-4">{item.label}</div>
+                        {todayWeatherDetailsDimension &&
+                            todayWeatherDetailsDimension.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className={classNames(
+                                        'flex items-center justify-between gap-2',
+                                        index != todayWeatherDetailsDimension.length - 1 && 'border-b border-[#1c1c27] '
+                                    )}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <IconPark icon={item.icon} size={26} />
+                                        <div className="py-4">{item.label}</div>
+                                    </div>
+                                    <div className="py-4 text-white text-xxlarge font-semibold">
+                                        <span>{item?.value}</span>
+                                        <span>{item?.unit}</span>
+                                    </div>
                                 </div>
-                                <div className="py-4 text-white text-xxlarge font-semibold">
-                                    <span>{item?.value}</span>
-                                    <span>{item?.unit}</span>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </WeatherCardContainer>
                 <WeatherCardContainer label="未来五日天气">

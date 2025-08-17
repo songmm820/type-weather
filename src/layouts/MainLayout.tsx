@@ -31,9 +31,9 @@ const MainLayout = () => {
     }
 
     return (
-        <div className="h-full flex flex-col" style={{ backgroundImage: `url(${bg})` }}>
+        <div className="w-full h-full flex flex-col" style={{ backgroundImage: `url(${bg})` }}>
             {/* 路由页面渲染区域 */}
-            <div className="flex-1">
+            <div className="@container flex-1">
                 <Outlet />
             </div>
 

@@ -41,7 +41,7 @@ export function RouterPermission(props: IPermissionRouterProps) {
         // 如果需要权限认证，并且本地存储中没有认证信息，则跳转到登录页面
         if (isRequiredAuth) {
             if (!localPermissionAuthData) {
-                // TODO
+                // console.log('跳转到登录页面')
             }
         }
     }, [isRequiredAuth, title, navigate])

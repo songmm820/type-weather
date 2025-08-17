@@ -50,13 +50,12 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
         try {
             // 首先从状态中获取位置信息
             const liveWeatherStoreData = await getLiveWeatherByStore()
-            if (liveWeatherStoreData) {
-                // 判断是否是今天的天气状况(因为天气信息每天只会获取一次，获取reportTime字段判断)
-                if (liveWeatherStoreData.requestTime && customDayjs(liveWeatherStoreData.requestTime).isToday()) {
-                    // 如果是今天的天气状况，则直接使用存储的天气信息
-                    setWeather(liveWeatherStoreData)
-                    return
-                }
+            // 判断是否是今天的天气状况(因为天气信息每隔一小时获取一次)
+            const isNeedFetch = !liveWeatherStoreData || !liveWeatherStoreData?.requestTime || customDayjs().diff(customDayjs(liveWeatherStoreData?.requestTime), 'hour') >= 1
+            if (!isNeedFetch) {
+                // 如果是今天的天气状况，则直接使用存储的天气信息
+                setWeather(liveWeatherStoreData)
+                return
             }
             // 先获取位置信息上下文中的城市adCode
             const adCode = locationCtx?.adCode
@@ -77,7 +76,6 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
             }
             setWeather(weather)
             await setLiveWeather(weather)
-            // 将天气信息存入SQL 只有每天请求天气的时候第一次才会存 @TODO
         } catch (error) {
             throw new Error(`获取实况天气信息失败: ${error}`)
         }

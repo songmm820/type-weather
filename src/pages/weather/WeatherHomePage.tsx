@@ -56,7 +56,7 @@ const WeatherHomePage = () => {
 
     return (
         <>
-            <div className="@container w-full h-full  bg-no-repeat bg-cover p-6">
+            <div className="w-full h-full  bg-no-repeat bg-cover p-6">
                 <SearchIndex onInput={handleInput} onLinkToDetail={onLinkSearch} />
             </div>
         </>
