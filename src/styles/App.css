@@ -95,7 +95,7 @@ html[data-theme='dark'] {
     /** 字体色 */
     --text-base: #bfbfd4;
     /** 字体大小 */
-    --text-size: 1rem;
+    --text-size: 14px;
 
     background-color: var(--bg-base);
     color: var(--text-base);
@@ -108,7 +108,7 @@ html[data-theme='light'] {
     /** 字体色 */
     --text-base: #000000;
     /** 字体大小 */
-    --text-size: 1rem;
+    --text-size: 14px;
 
     background-color: var(--bg-base);
     color: var(--text-base);

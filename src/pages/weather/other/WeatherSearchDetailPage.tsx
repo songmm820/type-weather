@@ -84,7 +84,7 @@ const WeatherSearchDetailPage = () => {
                 </div>
                 <div className="mt-4 flex-1 h-full relative">
                     {curBackgroundAndIcon?.background && (
-                        <div className="p-8 w-full h-full rounded-lg bg-no-repeat bg-cover" style={{ backgroundImage: `url(${curBackgroundAndIcon.background})` }}>
+                        <div className="px-8 py-4 w-full h-full rounded-lg bg-no-repeat bg-cover" style={{ backgroundImage: `url(${curBackgroundAndIcon.background})` }}>
                             <div className="h-full flex flex-col justify-between">
                                 <div className="h-full w-full flex justify-between items-end">
                                     <div className='w-full flex items-center justify-between'>
