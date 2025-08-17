@@ -42,11 +42,11 @@ const WeatherSearchDetailPage = () => {
     // 天气信息
     const [weatherInfo, setWeatherInfo] = useState<WeatherInfoType>()
 
-    // 搜索词
-    const [searchWord, setSearchWord] = useState<string>('')
-
     // 获取路由source字段
-    const source = search.get('source') || ('self' as string)
+    const source = search.get('source') || ''
+
+    // 搜索词
+    const [searchWord, setSearchWord] = useState<string>(source || '')
 
     // 输入框触发搜索
     const handleChangeInputSearch = async (e: string) => {
@@ -65,6 +65,10 @@ const WeatherSearchDetailPage = () => {
         }
     }, [])
 
+    useEffect(() => {
+        setSearchWord(source)
+    }, [source])
+
     // 是否获取当前城市信息
     const isGetLocal = useMemo(() => {
         return Boolean(!searchWord)
@@ -72,6 +76,7 @@ const WeatherSearchDetailPage = () => {
 
     // 当前实时时间时
     const currentHour = useMemo(() => {
+        console.log(1212, systemOsCtx?.systemTime)
         if (!systemOsCtx || systemOsCtx.systemTime?.length === 0 || !systemOsCtx.systemTime) return
         return systemOsCtx?.systemTime[3]
     }, [systemOsCtx?.systemTime[3]])
@@ -108,6 +113,7 @@ const WeatherSearchDetailPage = () => {
         const weatherLive = weatherInfoRes?.lives?.[0]
         if (!weatherLive) return
         const weathers = getWeatherStatus(weatherLive.weather, Number(weatherLive?.temperature), Number(weatherLive.windpower))
+        if (!currentHour) return
         setWeatherInfo({
             weather: weatherLive.weather,
             temperature: weatherLive.temperature,
@@ -146,7 +152,6 @@ const WeatherSearchDetailPage = () => {
 
     return (
         <div className="w-full h-full flex gap-6 p-4.5">
-            {isGetLocal}
             <div className="p-4 w-1/2 h-full bg-dark-elevated-1 rounded-md flex flex-col">
                 <div className="flex items-center gap-3">
                     <Logo fullLogo={false} size={56} />
@@ -214,11 +219,11 @@ const WeatherSearchDetailPage = () => {
                 </WeatherCardContainer>
                 <WeatherCardContainer label="未来五日天气">
                     <div className="flex-1 flex justify-center">
-                        <div className="w-1/5 flex justify-center">123</div>
-                        <div className="w-1/5 flex justify-center">123</div>
-                        <div className="w-1/5 flex justify-center">123</div>
-                        <div className="w-1/5 flex justify-center">123</div>
-                        <div className="w-1/5 flex justify-center">123</div>
+                        <div className="w-1/5 flex justify-center">null</div>
+                        <div className="w-1/5 flex justify-center">null</div>
+                        <div className="w-1/5 flex justify-center">null</div>
+                        <div className="w-1/5 flex justify-center">null</div>
+                        <div className="w-1/5 flex justify-center">null</div>
                     </div>
                 </WeatherCardContainer>
             </div>

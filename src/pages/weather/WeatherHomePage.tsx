@@ -1,11 +1,34 @@
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 import WeatherSearchInput from '~/pages/weather/other/WeatherSearchInput.tsx'
 import WeatherLogo from '~/pages/weather/other/WeatherLogo.tsx'
 import { useNavigate } from 'react-router-dom'
 import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
 import IconPark from '~/conponents/IconPark.tsx'
 
-const SearchIndex = ({ onLinkToDetail }: { onInput: (e: ChangeEvent<HTMLInputElement>) => void; onLinkToDetail: (key: '_SELF' | string) => void }) => {
+const SearchIndex = () => {
+    const navigate = useNavigate()
+
+    // 跳转天气详情
+
+    // 搜索词
+    const [searchWord, setSearchWord] = useState<string>('')
+
+    // 触发搜索
+    const handleChangeInputSearch = (e: string) => {
+        if (!e) return
+        setSearchWord(e)
+        onLinkToWeatherDetail(e)
+    }
+
+    // 跳转天气详情
+    const onLinkToWeatherDetail = (key?: string) => {
+        const urlSearchParams = new URLSearchParams()
+        if (key) {
+            urlSearchParams.append('source', key)
+        }
+        navigate(`${RouterConstantsEnum.WEATHER_DETAIL}?${urlSearchParams.toString()}`)
+    }
+
     return (
         <div className="flex flex-col py-12 w-full h-full">
             <div className="w-full flex justify-center">
@@ -23,12 +46,12 @@ const SearchIndex = ({ onLinkToDetail }: { onInput: (e: ChangeEvent<HTMLInputEle
                         </div>
                     </div>
                     <div className="mt-16 w-full flex items-center justify-center">
-                        <WeatherSearchInput />
+                        <WeatherSearchInput value={searchWord} onSearch={handleChangeInputSearch} />
                     </div>
                 </div>
 
                 <div className="w-full flex justify-center">
-                    <div className="cursor-pointer t-f-center p-6 t-bg-hover rounded-full" onClick={() => onLinkToDetail('_SELF')}>
+                    <div className="cursor-pointer t-f-center p-6 t-bg-hover rounded-full" onClick={() => onLinkToWeatherDetail()}>
                         <IconPark icon="go-end" size={32} />
                     </div>
                 </div>
@@ -38,26 +61,10 @@ const SearchIndex = ({ onLinkToDetail }: { onInput: (e: ChangeEvent<HTMLInputEle
 }
 
 const WeatherHomePage = () => {
-    const navigate = useNavigate()
-
-    const [searchKey, setSearchKey] = useState<string>('')
-
-    // 搜索事件
-    const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchKey(e.target.value)
-    }
-
-    // 跳转搜索页面
-    const onLinkSearch = (key: string) => {
-        const urlSearchParams = new URLSearchParams()
-        urlSearchParams.append('searchKey', key || searchKey)
-        navigate(`${RouterConstantsEnum.WEATHER_DETAIL}?${urlSearchParams.toString()}`)
-    }
-
     return (
         <>
             <div className="w-full h-full  bg-no-repeat bg-cover p-6">
-                <SearchIndex onInput={handleInput} onLinkToDetail={onLinkSearch} />
+                <SearchIndex />
             </div>
         </>
     )
