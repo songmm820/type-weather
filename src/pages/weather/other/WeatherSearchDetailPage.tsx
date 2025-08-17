@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 import IconPark from '~/conponents/IconPark.tsx'
 import { customDayjs } from '~/libs/DateTimeLib.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
-import { getBackgroundByTime, getWeatherStatus } from '~/libs/WeatherLib.ts'
+import { getBackgroundByTime, getWeatherIcon, getWeatherStatus } from '~/libs/WeatherLib.ts'
 import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
 import { useSearchParams } from 'react-router-dom'
 
@@ -31,8 +31,8 @@ const WeatherSearchDetailPage = () => {
     // 获取路由source字段
     const source = search.get('source') || ('self' as string)
 
-    // 计算当前天气背景
-    const curBackground = useMemo(() => {
+    // 计算当前天气背景和图标
+    const curBackgroundAndIcon = useMemo(() => {
         // 获取天气
         const weatherText = weatherCtx?.weather
         // 获取温度
@@ -44,7 +44,10 @@ const WeatherSearchDetailPage = () => {
         const weathers = getWeatherStatus(weatherText, Number(temperature), windpower)
         const hour = systemOsCtx?.systemTime[3]
         if (!hour) return
-        return getBackgroundByTime(Number(hour), weathers)
+        return {
+            background: getBackgroundByTime(Number(hour), weathers),
+            icon: getWeatherIcon(weathers)
+        }
     }, [systemOsCtx?.systemTime[3], weatherCtx?.weather, weatherCtx?.temperature, weatherCtx?.windpower])
 
     // 获取当前日期（年月日星期）
@@ -80,19 +83,27 @@ const WeatherSearchDetailPage = () => {
                     <WeatherSearchInput />
                 </div>
                 <div className="mt-4 flex-1 h-full relative">
-                    {curBackground && (
-                        <div className="p-8 w-full h-full rounded-lg bg-no-repeat bg-cover" style={{ backgroundImage: `url(${curBackground})` }}>
+                    {curBackgroundAndIcon?.background && (
+                        <div className="p-8 w-full h-full rounded-lg bg-no-repeat bg-cover" style={{ backgroundImage: `url(${curBackgroundAndIcon.background})` }}>
                             <div className="h-full flex flex-col justify-between">
-                                <div className="flex flex-col">
-                                    <div className="text-[#fafafa] text-2xl">{geoLocationCtx?.city}</div>
-                                    <div className="mt-2 text-base">
-                                        {currentDateAndWeek.date}, {currentDateAndWeek.week}
-                                    </div>
-                                </div>
+                                <div className="h-full w-full flex justify-between items-end">
+                                    <div className='w-full flex items-center justify-between'>
+                                        {weatherCtx?.temperature && (
+                                            <div className="text-white">
+                                                <div className="font-semibold text-7xl">{weatherCtx?.temperature}°c</div>
+                                                <div className="flex flex-col  mt-3">
+                                                    <div className="text-[#fafafa] text-base">{geoLocationCtx?.city}</div>
+                                                    <div className="text-small">
+                                                        {currentDateAndWeek.date}, {currentDateAndWeek.week}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
 
-                                <div className="w-full flex justify-between items-center">
-                                    {weatherCtx?.temperature && <div className="text-white font-semibold text-7xl">{weatherCtx?.temperature}°c</div>}
-                                    <div>123</div>
+                                        <div className="flex flex-col">
+                                            <img className="w-60" src={curBackgroundAndIcon.icon} alt={weatherCtx?.weather} />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

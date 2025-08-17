@@ -1,6 +1,6 @@
 // src/layouts/MainLayout.tsx
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import bg from '~/assets/weather/background.png'
+import bg from '~/assets/weather/common/background.png'
 import IconPark from '~/conponents/IconPark.tsx'
 import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'

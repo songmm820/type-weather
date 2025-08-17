@@ -15,8 +15,6 @@ import overcastNight from '~/assets/weather/night/night_overcast.png'
 export enum WeatherStatusEnum {
     /** 晴多云 */
     SUNNY_CLOUDY = 'SUNNY_CLOUDY',
-    /** 雨 */
-    RAIN = 'RAIN',
     /** 雪 */
     SNOW = 'SNOW',
     /** 雾 / 霾 */
@@ -27,6 +25,10 @@ export enum WeatherStatusEnum {
     HOT = 'HOT',
     /** 低温 */
     COLD = 'COLD',
+    /** 雨 */
+    RAIN = 'RAIN',
+    /** 大雨 */
+    HEAVY_RAIN = 'HEAVY_RAIN',
     /** 阴天 */
     OVERCAST = 'OVERCAST',
     /** 未知 */
@@ -50,30 +52,22 @@ export const getWeatherStatus = (weatherText: string, temperature: number, windp
     // 晴
     const sunnyList = ['热', '晴', '多云', '少云', '晴间多云', '晴有霾', '晴有雾', '晴有风', '微风', '和风', '清风']
     // 雨
-    const rainList = [
-        '阵雨',
+    const rainList = ['阵雨', '小雨', '中雨', '毛毛雨/细雨', '雨', '小雨-中雨', '雨雪天气', '雨夹雪', '阵雨夹雪', '冻雨']
+    // 雷阵雨
+    const heavyRainList = [
         '雷阵雨',
         '雷阵雨并伴有冰雹',
-        '小雨',
-        '中雨',
+        '强雷阵雨',
         '大雨',
         '暴雨',
         '大暴雨',
         '特大暴雨',
         '强阵雨',
-        '强雷阵雨',
         '极端降雨',
-        '毛毛雨/细雨',
-        '雨',
-        '小雨-中雨',
         '中雨-大雨',
         '大雨-暴雨',
         '暴雨-大暴雨',
-        '大暴雨-特大暴雨',
-        '雨雪天气',
-        '雨夹雪',
-        '阵雨夹雪',
-        '冻雨'
+        '大暴雨-特大暴雨'
     ]
     // 雪
     const snowList = ['雨雪天气', '雨夹雪', '阵雨夹雪', '雪', '阵雪', '小雪', '中雪', '大雪', '暴雪', '小雪-中雪', '中雪-大雪', '大雪-暴雪']
@@ -91,7 +85,6 @@ export const getWeatherStatus = (weatherText: string, temperature: number, windp
     if (temperature < 10) {
         statusSet.add(WeatherStatusEnum.COLD)
     }
-
     // 2. 根据天气情况判断
     if (sunnyList.includes(weatherText)) {
         statusSet.add(WeatherStatusEnum.SUNNY_CLOUDY)
@@ -100,6 +93,10 @@ export const getWeatherStatus = (weatherText: string, temperature: number, windp
     if (rainList.includes(weatherText)) {
         statusSet.add(WeatherStatusEnum.RAIN)
     }
+    // 判断是雷阵雨、大雨
+    if (heavyRainList.includes(weatherText)) {
+        statusSet.add(WeatherStatusEnum.HEAVY_RAIN)
+    }
     if (snowList.includes(weatherText)) {
         statusSet.add(WeatherStatusEnum.SNOW)
     }
@@ -107,7 +104,6 @@ export const getWeatherStatus = (weatherText: string, temperature: number, windp
     if (fogList.includes(weatherText)) {
         statusSet.add(WeatherStatusEnum.FOG)
     }
-
     // 判断是否风
     if (Number(windpower) >= 4 || windList.includes(weatherText)) {
         statusSet.add(WeatherStatusEnum.WIND)
@@ -147,8 +143,32 @@ export function getSeasonByMonth(month: number): SeasonEnum {
  * @param weatherList 天气列表
  */
 export function getBackgroundByTime(hour: number, weatherList: WeatherStatusEnum[]) {
-    const isNight = hour <= 6 || hour >= 18 // 顺序调换，可读性更好
+    // 是否是夜晚
+    const isNight = hour <= 6 || hour >= 18
+    // 是否有雨
     const isRain = weatherList.some((w) => w === WeatherStatusEnum.RAIN || w === WeatherStatusEnum.OVERCAST)
-
     return isNight ? (isRain ? overcastNight : sunnyCloudyNight) : isRain ? overcastLight : sunnyCloudyLight
+}
+
+import rainIcon from '~/assets/weather/common/rain.png'
+import overcastIcon from '~/assets/weather/common/overcast.png'
+import sunCloudyIcon from '~/assets/weather/common/sun_cloudy.png'
+import hotIcon from '~/assets/weather/common/hot.png'
+import bigRainIcon from '~/assets/weather/common/big_rain.png'
+import snowIcon from '~/assets/weather/common/snow.png'
+
+export function getWeatherIcon(weatherList: WeatherStatusEnum[]) {
+    const weatherMap: Record<WeatherStatusEnum, string> = {
+        [WeatherStatusEnum.SUNNY_CLOUDY]: sunCloudyIcon,
+        [WeatherStatusEnum.RAIN]: rainIcon,
+        [WeatherStatusEnum.OVERCAST]: overcastIcon,
+        [WeatherStatusEnum.HOT]: hotIcon,
+        [WeatherStatusEnum.HEAVY_RAIN]: bigRainIcon,
+        [WeatherStatusEnum.COLD]: bigRainIcon,
+        [WeatherStatusEnum.WIND]: bigRainIcon,
+        [WeatherStatusEnum.SNOW]: snowIcon,
+        [WeatherStatusEnum.FOG]: bigRainIcon,
+        [WeatherStatusEnum.UNKNOWN]: bigRainIcon
+    }
+    return weatherMap[weatherList[0]]
 }
