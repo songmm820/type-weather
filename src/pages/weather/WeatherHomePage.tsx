@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
 import IconPark from '~/conponents/IconPark.tsx'
 
-const SearchIndex = ({ onInput, onLinkToDetail }: { onInput: (e: ChangeEvent<HTMLInputElement>) => void; onLinkToDetail: (key: '_SELF' | string) => void }) => {
+const SearchIndex = ({ onLinkToDetail }: { onInput: (e: ChangeEvent<HTMLInputElement>) => void; onLinkToDetail: (key: '_SELF' | string) => void }) => {
     return (
         <div className="flex flex-col py-12 w-full h-full">
             <div className="w-full flex justify-center">
@@ -23,7 +23,7 @@ const SearchIndex = ({ onInput, onLinkToDetail }: { onInput: (e: ChangeEvent<HTM
                         </div>
                     </div>
                     <div className="mt-16 w-full flex items-center justify-center">
-                        <WeatherSearchInput onInput={onInput} />
+                        <WeatherSearchInput />
                     </div>
                 </div>
 

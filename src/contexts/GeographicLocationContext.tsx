@@ -3,7 +3,7 @@
  */
 
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { getLocationByIp } from '~/apis/amap/AmapWebApis.ts'
+import { getLocationByIpApi } from '~/apis/amap/AmapWebApis.ts'
 import { getLocationByStore, setLocationByStore } from '~/stores/GeographicLocationStore.ts'
 
 /** 地理信息类型 */
@@ -43,7 +43,7 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
                 return
             }
             // 取当前网络IP获取位置信息
-            const response = await getLocationByIp()
+            const response = await getLocationByIpApi()
             // 高德为获取定位，会返回一个空数组
             if (!Array.isArray(response.adcode)) {
                 setLocation({

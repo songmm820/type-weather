@@ -23,7 +23,7 @@ export const amapWebApiInstance = new AxiosClientClass<AmapWebApiResponse>({
  *
  * @param ip ip地址
  */
-export function getLocationByIp(ip?: string) {
+export function getLocationByIpApi(ip?: string) {
     const params = {
         key: WEB_API_KEY,
         ip: ip
@@ -39,7 +39,7 @@ export function getLocationByIp(ip?: string) {
  * @param adCode 城市行政区划编码
  * @param extensions 气象类型 base: 实况天气， all：预测天气
  */
-export function getWeatherInfoByAdCode(adCode: string, extensions: 'base' | 'all' = 'base') {
+export function getWeatherInfoByAdCodeApi(adCode: string, extensions: 'base' | 'all' = 'base') {
     const params: AmapWebApiWeatherRequestParams = {
         key: WEB_API_KEY,
         city: adCode,
@@ -48,4 +48,27 @@ export function getWeatherInfoByAdCode(adCode: string, extensions: 'base' | 'all
     return amapWebApiInstance.get<AmapWebApiWeatherRequestParams, AmapWebApiResponse & AmapWebApiWeatherResponse>('/weather/weatherInfo', params)
 }
 
-
+/**
+ * 逆地理编码（根据城市名称获取相应的adcode）
+ *
+ * https://lbs.amap.com/api/webservice/guide/api/georegeo
+ *
+ * @param cityName 城市名称
+ */
+export function getAdCodeByCityName(cityName: string) {
+    const params = {
+        key: WEB_API_KEY,
+        address: cityName
+    }
+    return amapWebApiInstance.get<
+        {
+            key: string
+            address: string
+        },
+        AmapWebApiResponse & {
+            readonly geocodes?: {
+                adcode: string
+            }[]
+        }
+    >('/geocode/geo', params)
+}

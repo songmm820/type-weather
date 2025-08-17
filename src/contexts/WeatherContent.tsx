@@ -3,7 +3,7 @@
  */
 
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { getWeatherInfoByAdCode } from '~/apis/amap/AmapWebApis.ts'
+import { getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { getLiveWeatherByStore, setLiveWeather } from '~/stores/WeatherStore.ts'
 import { customDayjs } from '~/libs/DateTimeLib.ts'
@@ -61,7 +61,7 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
             const adCode = locationCtx?.adCode
             if (!adCode) return
             // 获取实况天气信息
-            const response = await getWeatherInfoByAdCode(adCode, 'base')
+            const response = await getWeatherInfoByAdCodeApi(adCode, 'base')
             const liveWeather = response?.lives?.[0]
             if (!liveWeather) return
             // 设置实况天气信息
