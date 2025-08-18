@@ -87,7 +87,10 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <>
-            <WeatherContext.Provider value={weather ? { ...weather, onGetLiveWeather } : null}>{children}</WeatherContext.Provider>
+            <WeatherContext.Provider value={weather ? { ...weather, onGetLiveWeather } : null}>
+                {/* 如果没有天气信息阻塞渲染 */}
+                {weather && Object.keys(weather).length > 0 && children}
+            </WeatherContext.Provider>
         </>
     )
 }

@@ -7,14 +7,11 @@ import { GeographicLocationContext, GeographicLocationType } from '~/contexts/Ge
 
 type GeographicLocationHookType = GeographicLocationType & {
     onGetLocation: () => Promise<void>
-} | null
+}
 
+// 因为为null阻塞渲染 这里直接断言不为null
 export const useGeographicLocation = (): GeographicLocationHookType => {
-    const context = useContext(GeographicLocationContext)
-
-    if (!context) {
-        return null
-    }
+    const context = useContext(GeographicLocationContext)!
 
     return {
         province: context.province,

@@ -65,21 +65,20 @@ const WeatherSearchDetailPage = () => {
 
     // 获取当前城市天气信息
     const onGetLocalWeather = () => {
-        if (!weatherCtx || !geoLocationCtx) return
-        const weathers = getWeatherStatus(weatherCtx?.weather, Number(weatherCtx?.temperature), Number(weatherCtx.windpower))
+        const weathers = getWeatherStatus(weatherCtx.weather, Number(weatherCtx.temperature), Number(weatherCtx.windpower))
         if (!currentHour) return
         const weatherInfo: WeatherInfoType = {
             weather: weatherCtx.weather,
-            temperature: weatherCtx?.temperature,
-            windpower: weatherCtx?.windpower,
+            temperature: weatherCtx.temperature,
+            windpower: weatherCtx.windpower,
             background: getBackgroundByTime(Number(currentHour), weathers),
             icon: getWeatherIcon(weathers),
             city: geoLocationCtx.city,
             weatherDetailList: [
-                { icon: 'temperature', label: '体感温度', value: weatherCtx?.temperature ?? '', unit: '°c' },
-                { icon: 'water-dot', label: '空气湿度', value: weatherCtx?.humidity ?? '', unit: '%' },
-                { icon: 'wind', label: '风向', value: weatherCtx?.windDirection ?? '' },
-                { icon: 'wind-rate', label: '风力等级', value: weatherCtx?.windpower ?? '' }
+                { icon: 'temperature', label: '体感温度', value: weatherCtx.temperature, unit: '°c' },
+                { icon: 'water-dot', label: '空气湿度', value: weatherCtx.humidity, unit: '%' },
+                { icon: 'wind', label: '风向', value: weatherCtx.windDirection },
+                { icon: 'wind-rate', label: '风力等级', value: weatherCtx?.windpower }
             ]
         }
         setWeatherInfo(weatherInfo)
@@ -88,13 +87,12 @@ const WeatherSearchDetailPage = () => {
     // 获取搜索城市天气信息
     const onGetSearchWeather = async () => {
         const cityRes = await getAdCodeByCityName(searchWord)
-        if (cityRes.geocodes?.length === 0) return
         const adCode = cityRes?.geocodes?.[0]?.adcode
         if (!adCode) return
         const weatherInfoRes = await getWeatherInfoByAdCodeApi(adCode)
         const weatherLive = weatherInfoRes?.lives?.[0]
         if (!weatherLive) return
-        const weathers = getWeatherStatus(weatherLive.weather, Number(weatherLive?.temperature), Number(weatherLive.windpower))
+        const weathers = getWeatherStatus(weatherLive.weather, Number(weatherLive.temperature), Number(weatherLive.windpower))
         if (!currentHour) return
         setWeatherInfo({
             weather: weatherLive.weather,
@@ -104,10 +102,10 @@ const WeatherSearchDetailPage = () => {
             icon: getWeatherIcon(weathers),
             city: weatherLive.city,
             weatherDetailList: [
-                { icon: 'temperature', label: '体感温度', value: weatherLive?.temperature ?? '', unit: '°c' },
-                { icon: 'water-dot', label: '空气湿度', value: weatherLive?.humidity ?? '', unit: '%' },
-                { icon: 'wind', label: '风向', value: weatherLive?.winddirection ?? '' },
-                { icon: 'wind-rate', label: '风力等级', value: weatherLive?.windpower ?? '' }
+                { icon: 'temperature', label: '体感温度', value: weatherLive.temperature, unit: '°c' },
+                { icon: 'water-dot', label: '空气湿度', value: weatherLive.humidity, unit: '%' },
+                { icon: 'wind', label: '风向', value: weatherLive.winddirection },
+                { icon: 'wind-rate', label: '风力等级', value: weatherLive.windpower }
             ]
         })
     }
@@ -125,7 +123,7 @@ const WeatherSearchDetailPage = () => {
         } else {
             onGetSearchWeather().then()
         }
-    }, [source, isGetLocal, searchWord, weatherCtx?.weather, weatherCtx?.temperature, weatherCtx?.humidity, weatherCtx?.windDirection, weatherCtx?.windpower, currentHour])
+    }, [source, isGetLocal, searchWord, weatherCtx.weather, weatherCtx.temperature, weatherCtx.humidity, weatherCtx.windDirection, weatherCtx.windpower, currentHour])
 
     return (
         <div className="w-full h-full flex gap-6 p-4.5">

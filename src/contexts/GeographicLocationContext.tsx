@@ -65,7 +65,10 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
 
     return (
         <>
-            <GeographicLocationContext.Provider value={location ? { ...location, onGetLocation } : null}>{children}</GeographicLocationContext.Provider>
+            <GeographicLocationContext.Provider value={location ? { ...location, onGetLocation } : null}>
+                {/* 如果没有位置信息阻塞渲染 */}
+                {location && Object.keys(location).length > 0 && children}
+            </GeographicLocationContext.Provider>
         </>
     )
 }

@@ -5,14 +5,10 @@
 import { useContext } from 'react'
 import { LiveWeatherType, WeatherContext } from '~/contexts/WeatherContent.tsx'
 
-type LiveWeatherHookType = (LiveWeatherType & {}) | null
+type LiveWeatherHookType = LiveWeatherType & {}
 
 export const useWeather = (): LiveWeatherHookType => {
-    const context = useContext(WeatherContext)
-
-    if (!context) {
-        return null
-    }
+    const context = useContext(WeatherContext)!
 
     return {
         weather: context.weather,

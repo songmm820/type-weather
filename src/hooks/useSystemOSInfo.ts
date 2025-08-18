@@ -5,18 +5,12 @@
 import { useContext } from 'react'
 import { AppSystemOSInfoContext, AppSystemOSInfoType } from '~/contexts/AppSystemOSInfoContext.tsx'
 
-type SystemOSInfoHookType =
-    | (AppSystemOSInfoType & {
-          onGetSystemOSInfo: () => Promise<void>
-      })
-    | null
+type SystemOSInfoHookType = AppSystemOSInfoType & {
+    onGetSystemOSInfo: () => Promise<void>
+}
 
 export const useSystemOSInfo = (): SystemOSInfoHookType => {
-    const context = useContext(AppSystemOSInfoContext)
-
-    if (!context) {
-        return null
-    }
+    const context = useContext(AppSystemOSInfoContext)!
 
     return {
         osType: context.osType,
