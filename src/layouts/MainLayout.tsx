@@ -81,7 +81,7 @@ const LiveSystemTime = memo(function LiveSystemTime() {
         systemOsCtx &&
         systemOsCtx?.systemTime.length > 0 && (
             <div>
-                {systemOsCtx?.systemTime[3]}:{systemOsCtx?.systemTime[4]}:{systemOsCtx?.systemTime[5]}
+                {systemOsCtx?.systemTime[3]}:{systemOsCtx?.systemTime[4]}
             </div>
         )
     )

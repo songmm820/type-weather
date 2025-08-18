@@ -1,19 +1,18 @@
 /**
  * 天气搜索详情
  */
-import { useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import Logo from '~/pages/weather/other/WeatherLogo.tsx'
 import WeatherSearchInput from '~/pages/weather/other/WeatherSearchInput.tsx'
-import classNames from 'classnames'
 import WeatherCardContainer from '~/pages/weather/other/WeatherCardContainer.tsx'
 import { useWeather } from '~/hooks/useWeather.ts'
-import IconPark from '~/conponents/IconPark.tsx'
-import { customDayjs } from '~/libs/DateTimeLib.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { getBackgroundByTime, getWeatherIcon, getWeatherStatus } from '~/libs/WeatherLib.ts'
 import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
 import { useSearchParams } from 'react-router-dom'
 import { getAdCodeByCityName, getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
+import TodayWeatherCard from '~/pages/weather/other/TodayWeatherCard.tsx'
+import TodayWeatherMood from '~/pages/weather/other/TodayWeatherMood.tsx'
 
 type WeatherDetail = {
     icon: string
@@ -22,7 +21,7 @@ type WeatherDetail = {
     unit?: string
 }
 
-type WeatherInfoType = {
+export type WeatherInfoType = {
     icon: string
     background: string
     temperature: string
@@ -33,41 +32,25 @@ type WeatherInfoType = {
 }
 
 const WeatherSearchDetailPage = () => {
+    const [search] = useSearchParams()
+    // 获取路由source字段
+    const source = search.get('source') || ''
+
     // 获取系统实时时间
     const systemOsCtx = useSystemOSInfo()
     const geoLocationCtx = useGeographicLocation()
     const weatherCtx = useWeather()
-    const [search] = useSearchParams()
 
     // 天气信息
     const [weatherInfo, setWeatherInfo] = useState<WeatherInfoType>()
-
-    // 获取路由source字段
-    const source = search.get('source') || ''
 
     // 搜索词
     const [searchWord, setSearchWord] = useState<string>(source || '')
 
     // 输入框触发搜索
-    const handleChangeInputSearch = async (e: string) => {
+    const handleChangeInputSearch = useCallback((e: string) => {
         setSearchWord(e)
-    }
-
-    // 获取当前日期（年月日星期）
-    const currentDateAndWeek = useMemo(() => {
-        // 日期
-        const date = customDayjs().format('YYYY年MM月DD日')
-        // 星期
-        const week = customDayjs().format('dddd')
-        return {
-            date,
-            week
-        }
     }, [])
-
-    useEffect(() => {
-        setSearchWord(source)
-    }, [source])
 
     // 是否获取当前城市信息
     const isGetLocal = useMemo(() => {
@@ -77,12 +60,12 @@ const WeatherSearchDetailPage = () => {
     // 当前实时时间时
     const currentHour = useMemo(() => {
         if (!systemOsCtx || systemOsCtx.systemTime?.length === 0 || !systemOsCtx.systemTime) return
-        return systemOsCtx?.systemTime[3]
-    }, [systemOsCtx?.systemTime[3]])
+        return systemOsCtx?.systemTime[2]
+    }, [systemOsCtx?.systemTime[2]])
 
     // 获取当前城市天气信息
     const onGetLocalWeather = () => {
-        if (!geoLocationCtx?.city || !weatherCtx?.weather || !weatherCtx?.temperature || !weatherCtx?.windpower || systemOsCtx?.systemTime?.length === 0) return
+        if (!weatherCtx || !geoLocationCtx) return
         const weathers = getWeatherStatus(weatherCtx?.weather, Number(weatherCtx?.temperature), Number(weatherCtx.windpower))
         if (!currentHour) return
         const weatherInfo: WeatherInfoType = {
@@ -129,6 +112,11 @@ const WeatherSearchDetailPage = () => {
         })
     }
 
+    useEffect(() => {
+        if (!source) return
+        setSearchWord(source)
+    }, [source])
+
     // 今日天气详情维度
     useEffect(() => {
         // 如果是获取当前定位城市
@@ -137,97 +125,45 @@ const WeatherSearchDetailPage = () => {
         } else {
             onGetSearchWeather().then()
         }
-    }, [
-        source,
-        isGetLocal,
-        searchWord,
-        weatherCtx?.weather,
-        weatherCtx?.temperature,
-        weatherCtx?.humidity,
-        weatherCtx?.windDirection,
-        weatherCtx?.windpower,
-        systemOsCtx?.systemTime[3]
-    ])
+    }, [source, isGetLocal, searchWord, weatherCtx?.weather, weatherCtx?.temperature, weatherCtx?.humidity, weatherCtx?.windDirection, weatherCtx?.windpower, currentHour])
 
     return (
         <div className="w-full h-full flex gap-6 p-4.5">
-            <div className="p-4 w-1/2 h-full bg-dark-elevated-1 rounded-md flex flex-col">
-                <div className="flex items-center gap-3">
-                    <Logo fullLogo={false} size={56} />
-                    <WeatherSearchInput
-                        value={searchWord}
-                        placeholder={geoLocationCtx?.city ? `已自动定位到${geoLocationCtx.city} 搜索查询其他城市` : ''}
-                        onSearch={handleChangeInputSearch}
-                    />
-                </div>
-                <div className="mt-4 flex-1 h-full relative">
-                    {weatherInfo?.background && (
-                        <div className="px-8 py-4 w-full h-full rounded-lg bg-no-repeat bg-cover" style={{ backgroundImage: `url(${weatherInfo.background})` }}>
-                            <div className="h-full flex flex-col justify-between">
-                                <div className="h-full w-full flex justify-between items-end">
-                                    <div className="w-full flex items-center justify-between">
-                                        {weatherInfo?.temperature && (
-                                            <div className="text-white">
-                                                <div className="font-semibold text-7xl">{weatherInfo.temperature}°c</div>
-                                                <div className="flex flex-col  mt-3">
-                                                    <div className="text-[#fafafa] text-base">
-                                                        <span className="mr-2">{weatherInfo.weather},</span>
-                                                        <span>{weatherInfo?.city}</span>
-                                                    </div>
-                                                    <div className="text-small">
-                                                        {currentDateAndWeek.date}, {currentDateAndWeek.week}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className="flex flex-col">
-                                            <img className="w-60" src={weatherInfo.icon} alt={weatherInfo?.weather} />
-                                        </div>
-                                    </div>
-                                </div>
+            {weatherInfo && Object.keys(weatherInfo).length > 0 && (
+                <>
+                    <SearchCityBar weatherInfo={weatherInfo} searchWord={searchWord} city={geoLocationCtx?.city} onSearch={handleChangeInputSearch} />
+                    <div className="w-1/2 h-full flex flex-col gap-6">
+                        <TodayWeatherCard weatherInfo={weatherInfo} />
+                        <WeatherCardContainer label="未来五日天气">
+                            <div className="flex-1 flex justify-center">
+                                <div className="w-1/5 flex justify-center">null</div>
+                                <div className="w-1/5 flex justify-center">null</div>
+                                <div className="w-1/5 flex justify-center">null</div>
+                                <div className="w-1/5 flex justify-center">null</div>
+                                <div className="w-1/5 flex justify-center">null</div>
                             </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-            <div className="w-1/2 h-full flex flex-col gap-6">
-                <WeatherCardContainer
-                    label="今日天气详情"
-                    desc={
-                        <div className="text-small">
-                            <span>{customDayjs(weatherCtx?.reportTime).format('MM-DD HH:mm')}&nbsp;发布</span>
-                        </div>
-                    }
-                >
-                    <div className="flex-1 flex flex-col justify-center">
-                        {weatherInfo?.weatherDetailList &&
-                            weatherInfo?.weatherDetailList.map((item, index) => (
-                                <div key={index} className={classNames('flex items-center justify-between gap-2 border-b border-[#1c1c27] ')}>
-                                    <div className="flex items-center gap-4">
-                                        <IconPark icon={item.icon} size={26} />
-                                        <div className="py-4">{item.label}</div>
-                                    </div>
-                                    <div className="py-4 text-white text-xxlarge font-semibold">
-                                        <span>{item?.value}</span>
-                                        <span>{item?.unit}</span>
-                                    </div>
-                                </div>
-                            ))}
+                        </WeatherCardContainer>
                     </div>
-                </WeatherCardContainer>
-                <WeatherCardContainer label="未来五日天气">
-                    <div className="flex-1 flex justify-center">
-                        <div className="w-1/5 flex justify-center">null</div>
-                        <div className="w-1/5 flex justify-center">null</div>
-                        <div className="w-1/5 flex justify-center">null</div>
-                        <div className="w-1/5 flex justify-center">null</div>
-                        <div className="w-1/5 flex justify-center">null</div>
-                    </div>
-                </WeatherCardContainer>
-            </div>
+                </>
+            )}
         </div>
     )
 }
+
+const SearchCityBar = memo(function SearchCityBar(props: { weatherInfo: WeatherInfoType; searchWord: string; city?: string; onSearch: (e: string) => void }) {
+    const { weatherInfo, searchWord, city, onSearch } = props
+
+    return (
+        <div className="p-4 w-1/2 h-full bg-dark-elevated-1 rounded-md flex flex-col">
+            <div className="flex items-center gap-3">
+                <Logo fullLogo={false} size={56} />
+                <WeatherSearchInput value={searchWord} placeholder={city ? `已自动定位到${city} 搜索查询其他城市` : ''} onSearch={onSearch} />
+            </div>
+            <div className="mt-4 flex-1 h-full relative">
+                <TodayWeatherMood weatherInfo={weatherInfo} />
+            </div>
+        </div>
+    )
+})
 
 export default WeatherSearchDetailPage

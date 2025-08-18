@@ -155,7 +155,6 @@ export function getSeasonByMonth(month: number): SeasonEnum {
  * @param weatherList 天气列表
  */
 export function getBackgroundByTime(hour: number, weatherList: WeatherStatusEnum[]): string {
-    // console.log('weatherList', hour, weatherList)
     // 是否是夜晚
     const isNight = hour <= 6 || hour >= 18
     // 是否有雨

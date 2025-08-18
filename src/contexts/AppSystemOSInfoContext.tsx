@@ -5,6 +5,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { getCurrentVersion, getOsInfo } from '~/libs/OsLib.ts'
 import { listen } from '@tauri-apps/api/event'
+import { customDayjs } from '~/libs/DateTimeLib.ts'
 
 /** 系统信息类型 */
 export type AppSystemOSInfoType = {
@@ -40,8 +41,16 @@ export const AppSystemOSInfoContext = createContext<AppSystemOSInfoContext | nul
 export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => {
     // 获取系统信息
     const [systemInfo, setSystemInfo] = useState<Omit<AppSystemOSInfoContext, 'onGetSystemOSInfo' | 'systemTime'> | null>(null)
+
+    // 默认取当前时间 年月日时分
+    const year = customDayjs().format('YYYY')
+    const month = customDayjs().format('MM')
+    const day = customDayjs().format('DD')
+    const hour = customDayjs().format('HH')
+    const minute = customDayjs().format('mm')
+
     // 实时时间
-    const [systemTime, setSystemTime] = useState<string[]>([])
+    const [systemTime, setSystemTime] = useState<string[]>([year, month, day, hour, minute])
 
     // 获取系统信息
     const onGetSystemOSInfo = async () => {
@@ -52,6 +61,7 @@ export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => 
 
     // 初始化获取系统信息
     useEffect(() => {
+        // Rust 每间隔一段时间更新客户端时间
         const unlisten = listen<string[]>('time-update', (event) => {
             setSystemTime(event.payload)
         })
