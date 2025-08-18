@@ -6,13 +6,11 @@ import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { useWeather } from '~/hooks/useWeather.ts'
 import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
+import { memo } from 'react'
 
 const MainLayout = () => {
-    const navigate = useNavigate()
     const location = useLocation()
-    const geoLocationCtx = useGeographicLocation()
-    const weatherCtx = useWeather()
-    const systemOsCtx = useSystemOSInfo()
+    const navigate = useNavigate()
 
     // 判断当前是否还可以返回
     const isCanBack = () => {
@@ -41,13 +39,9 @@ const MainLayout = () => {
             <nav className="bg-[#131319] h-10 flex justify-end py-1.5 px-6">
                 {/* 左侧导航栏 */}
                 <div className="h-full flex-1 flex items-center gap-2">
-                    {systemOsCtx && systemOsCtx?.systemTime.length > 0 && (
-                        <div>
-                            {systemOsCtx?.systemTime[3]}:{systemOsCtx?.systemTime[4]}
-                        </div>
-                    )}
-                    {geoLocationCtx?.city && <div className="text-sm">{geoLocationCtx?.city}</div>}
-                    {weatherCtx?.temperature && <div className="text-sm">{weatherCtx?.temperature}°</div>}
+                    <LiveSystemTime />
+                    <GeoCity />
+                    <Weather />
                 </div>
 
                 {/* 右侧导航栏 */}
@@ -70,5 +64,27 @@ const MainLayout = () => {
         </div>
     )
 }
+
+const Weather = memo(function Weather() {
+    const weatherCtx = useWeather()
+    return weatherCtx?.temperature && <div className="text-sm">{weatherCtx?.temperature}°</div>
+})
+
+const GeoCity = memo(function GeoCity() {
+    const geoLocationCtx = useGeographicLocation()
+    return geoLocationCtx?.city && <div className="text-sm">{geoLocationCtx?.city}</div>
+})
+
+const LiveSystemTime = memo(function LiveSystemTime() {
+    const systemOsCtx = useSystemOSInfo()
+    return (
+        systemOsCtx &&
+        systemOsCtx?.systemTime.length > 0 && (
+            <div>
+                {systemOsCtx?.systemTime[3]}:{systemOsCtx?.systemTime[4]}:{systemOsCtx?.systemTime[5]}
+            </div>
+        )
+    )
+})
 
 export default MainLayout

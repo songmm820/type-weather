@@ -76,7 +76,6 @@ const WeatherSearchDetailPage = () => {
 
     // 当前实时时间时
     const currentHour = useMemo(() => {
-        console.log(1212, systemOsCtx?.systemTime)
         if (!systemOsCtx || systemOsCtx.systemTime?.length === 0 || !systemOsCtx.systemTime) return
         return systemOsCtx?.systemTime[3]
     }, [systemOsCtx?.systemTime[3]])

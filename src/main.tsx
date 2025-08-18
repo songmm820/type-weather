@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+// import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from '~/App.tsx'
 import { ThemeModeEnum } from '~/constants/AppConstants.ts'
@@ -12,7 +12,7 @@ if (import.meta.env.PROD) {
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <StrictMode>
+    // <StrictMode>
         <App />
-    </StrictMode>
+    // </StrictMode>
 )
