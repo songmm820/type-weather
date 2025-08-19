@@ -1,12 +1,11 @@
 // src/layouts/MainLayout.tsx
+import { memo } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import bg from '~/assets/weather/common/background.png'
 import IconPark from '~/conponents/IconPark.tsx'
 import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
 import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { useWeather } from '~/hooks/useWeather.ts'
-import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
-import { memo } from 'react'
 
 const MainLayout = () => {
     const location = useLocation()
@@ -39,7 +38,6 @@ const MainLayout = () => {
             <nav className="bg-[#131319] h-10 flex justify-end py-1.5 px-6">
                 {/* 左侧导航栏 */}
                 <div className="h-full flex-1 flex items-center gap-2">
-                    <LiveSystemTime />
                     <GeoCity />
                     <Weather />
                 </div>
@@ -73,18 +71,6 @@ const Weather = memo(function Weather() {
 const GeoCity = memo(function GeoCity() {
     const geoLocationCtx = useGeographicLocation()
     return geoLocationCtx?.city && <div className="text-sm">{geoLocationCtx?.city}</div>
-})
-
-const LiveSystemTime = memo(function LiveSystemTime() {
-    const systemOsCtx = useSystemOSInfo()
-    return (
-        systemOsCtx &&
-        systemOsCtx?.systemTime.length > 0 && (
-            <div>
-                {systemOsCtx?.systemTime[3]}:{systemOsCtx?.systemTime[4]}
-            </div>
-        )
-    )
 })
 
 export default MainLayout
