@@ -5,6 +5,8 @@
 import { platform, version, arch, locale, hostname, family, type } from '@tauri-apps/plugin-os'
 import { check, Update } from '@tauri-apps/plugin-updater'
 import { getVersion } from '@tauri-apps/api/app'
+import { error, info } from '@tauri-apps/plugin-log'
+import { relaunch } from '@tauri-apps/plugin-process'
 
 /**
  * 获取操作系统类型
@@ -52,8 +54,9 @@ export async function checkUpdateOS(): Promise<Update | 'NO_UPDATE'> {
         })
         if (!update) return 'NO_UPDATE'
         return update
-    } catch (error) {
-        throw new Error(`获取更新失败，请检查网路连接。: ${error}`)
+    } catch (err) {
+        await error(`获取更新失败，请检查网路连接。: ${err}`)
+        throw new Error(`获取更新失败，请检查网路连接。: ${err}`)
     }
 }
 
@@ -87,6 +90,10 @@ export async function downloadAndInstall(update:Update,setPercent: (percent: num
                 break
         }
     })
+
+    await info(`更新完成，即将重启应用。`)
+    // 重启
+    await relaunch()
 }
 
 /**

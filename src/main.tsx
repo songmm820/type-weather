@@ -13,6 +13,6 @@ if (import.meta.env.PROD) {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     // <StrictMode>
-        <App />
+    <App />
     // </StrictMode>
 )
