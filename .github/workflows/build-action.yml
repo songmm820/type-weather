@@ -88,7 +88,4 @@ jobs:
           releaseBody: 'Version v${{ env.VERSION }} — built by GitHub Actions.'
           releaseDraft: false
           prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
-      # 同步仓库
-      - name: Sync To Gitee
-        uses: ./sync-release-to-gitee
         
