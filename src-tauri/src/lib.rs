@@ -1,7 +1,7 @@
 mod invoke_command;
 mod windows;
 
-use crate::invoke_command::{ping, spawn_clock};
+use crate::invoke_command::{get_windows_position, ping, spawn_clock};
 use crate::windows::create_main_window;
 
 use tauri::Manager;
@@ -57,6 +57,9 @@ pub fn run() {
                 .build(),
         )
         .invoke_handler(tauri::generate_handler![ping])
+        .invoke_handler(tauri::generate_handler![get_windows_position])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+
+
 }
