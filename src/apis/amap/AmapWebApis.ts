@@ -3,7 +3,7 @@
  */
 
 import { AxiosClientClass } from '~/network/RequestConfig.ts'
-import { AmapWebApiIpResponse, AmapWebApiResponse, AmapWebApiWeatherRequestParams, AmapWebApiWeatherResponse } from '~/apis/amap/AmapTypes.ts'
+import { AmapWebApiIpResponse, AmapWebApiRegeoResponse, AmapWebApiResponse, AmapWebApiWeatherRequestParams, AmapWebApiWeatherResponse } from '~/apis/amap/AmapTypes.ts'
 
 /** WebApi Key */
 const WEB_API_KEY = import.meta.env.VITE_APP_MAP_KEY
@@ -55,7 +55,7 @@ export function getWeatherInfoByAdCodeApi(adCode: string, extensions: 'base' | '
  *
  * @param cityName 城市名称
  */
-export function getAdCodeByCityName(cityName: string) {
+export function getAdCodeByCityNameApi(cityName: string) {
     const params = {
         key: WEB_API_KEY,
         address: cityName
@@ -71,4 +71,23 @@ export function getAdCodeByCityName(cityName: string) {
             }[]
         }
     >('/geocode/geo', params)
+}
+
+
+/**
+ * 逆地理编码（根据经纬度获取相应的adcode）
+ *
+ * https://lbs.amap.com/api/webservice/guide/api/georegeo
+ *
+ * @param location 经纬度数组
+ */
+export function getAdCodeByLocationApi(location:string[]) {
+    const params = {
+        key: WEB_API_KEY,
+        location: location.join(",")
+    }
+    return amapWebApiInstance.get<{
+        key:string,
+        location:string
+    },AmapWebApiResponse & AmapWebApiRegeoResponse>("geocode/regeo",params)
 }

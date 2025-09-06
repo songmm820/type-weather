@@ -1,3 +1,4 @@
+use serde::Serialize;
 use tauri::Emitter;
 use tokio::time::Duration;
 
@@ -30,24 +31,34 @@ pub fn spawn_clock(app: tauri::AppHandle) {
 
 use windows::Devices::Geolocation::Geolocator;
 
+#[derive(Debug, Serialize)]
+pub struct GeoPosition {
+    longitude: f64,
+    latitude: f64,
+}
 /// 获取windows位置权限
 #[tauri::command]
-pub fn get_windows_position() -> Result<(f64, f64), String> {
-    let locator = Geolocator::new()
-        .map_err(|e| e.to_string())?;
+pub fn get_windows_position() -> Result<GeoPosition, String> {
+    let locator = Geolocator::new().map_err(|e| e.to_string())?;
     let pos = locator
         .GetGeopositionAsync()
         .map_err(|e| e.to_string())?
         .get()
         .map_err(|e| e.to_string())?;
     // 先把 Point 存下来，避免多次 unwrap
-    let point = pos.Coordinate().map_err(|_| "no coordinate")?
-        .Point().map_err(|_| "no point")?;
+    let point = pos
+        .Coordinate()
+        .map_err(|_| "no coordinate")?
+        .Point()
+        .map_err(|_| "no point")?;
     let basic = point.Position().map_err(|_| "no basic position")?;
-    let latitude  = basic.Latitude;
+    let latitude = basic.Latitude;
     let longitude = basic.Longitude;
 
     log::info!("经度: {longitude}, 纬度: {latitude}");
     println!("经度: {longitude}, 纬度: {latitude}");
-    Ok((latitude, longitude))
+    Ok(GeoPosition {
+        longitude,
+        latitude,
+    })
 }

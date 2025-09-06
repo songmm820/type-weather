@@ -10,7 +10,7 @@ import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { getBackgroundByTime, getWeatherIcon, getWeatherStatus } from '~/libs/WeatherLib.ts'
 import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
 import { useSearchParams } from 'react-router-dom'
-import { getAdCodeByCityName, getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
+import { getAdCodeByCityNameApi, getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
 import TodayWeatherCard from '~/pages/weather/other/TodayWeatherCard.tsx'
 import TodayWeatherMood from '~/pages/weather/other/TodayWeatherMood.tsx'
 
@@ -86,7 +86,7 @@ const WeatherSearchDetailPage = () => {
 
     // 获取搜索城市天气信息
     const onGetSearchWeather = async () => {
-        const cityRes = await getAdCodeByCityName(searchWord)
+        const cityRes = await getAdCodeByCityNameApi(searchWord)
         const adCode = cityRes?.geocodes?.[0]?.adcode
         if (!adCode) return
         const weatherInfoRes = await getWeatherInfoByAdCodeApi(adCode)

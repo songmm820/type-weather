@@ -104,3 +104,29 @@ export type AmapWebApiWeatherResponse = {
     /** 预报天气信息数据 */
     forecast?: AmapWebApiWeatherForecastResponse[]
 }
+
+
+/** 逆地理编码 响应参数 */
+export type AmapWebApiRegeoResponse = {
+    /** 逆地理编码列表 */
+    readonly regeocode: {
+        /** 地址元素列表 */
+        readonly addressComponent: {
+            /** 坐标点所在国家名称 例如：中国 */
+            country: string
+            /** 坐标点所在省份名称 例如：北京市 */
+            province: string
+            /** 坐标点所在城市名称 请注意：当城市是省直辖县时返回为空，以及城市为北京、上海、天津、重庆四个直辖市时，该字段返回为空 */
+            city: string
+            /** 城市编码 例如：010 */
+            citycode: string
+            /** 坐标点所在区名称 例如：海淀区 */
+            district: string
+            /** 坐标点所在乡镇街道名称 例如：上地街道 */
+            township: string
+            /** 行政区编码 例如：110108 */
+            adcode: string
+        }
+        readonly formatted_address: string
+    }
+}

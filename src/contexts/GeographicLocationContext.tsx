@@ -3,17 +3,25 @@
  */
 
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { getLocationByIpApi } from '~/apis/amap/AmapWebApis.ts'
+import {  getAdCodeByLocationApi } from '~/apis/amap/AmapWebApis.ts'
+import { invoke } from '@tauri-apps/api/core'
+import { InvokeConstants } from '~/constants/InvokeConstants.ts'
 import { getLocationByStore, setLocationByStore } from '~/stores/GeographicLocationStore.ts'
 
 /** 地理信息类型 */
 export type GeographicLocationType = {
+    /** 城市编码 (对应高德地图) */
+    adCode: string
+    /** 国家 */
+    country: string
     /** 省 */
     province: string
     /** 城市 */
     city: string
-    /** 城市编码 (对应高德地图) */
-    adCode: string | null
+    /** 区 */
+    district: string
+    /** 街道 */
+    township:string
 }
 
 /** 地理位置上下文类型 */
@@ -32,7 +40,8 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
     /**
      * 获取位置信息
      *
-     * 说明：这里的位置信息，只有首次会通过IP发起网络定位，后续都会从Store从获取，如果Store中没有，则重新发起网络定位重新获取。
+     * 说明：这里的位置信息，只有首次会通过经纬度获取城市信息
+     * 后续都会从Store从获取，如果Store中没有，则重新发起定位重新获取。
      */
     const onGetLocation = async () => {
         try {
@@ -42,17 +51,22 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
                 setLocation(locationStoreData)
                 return
             }
-            // 取当前网络IP获取位置信息
-            const response = await getLocationByIpApi()
-            // 高德为获取定位，会返回一个空数组
-            if (!Array.isArray(response.adcode)) {
-                setLocation({
-                    province: response.province,
-                    city: response.city,
-                    adCode: response.adcode
-                })
+            const locationArr = await invoke(InvokeConstants.GET_LOCATION) as {
+                longitude: number
+                latitude: number
             }
-            await setLocationByStore({ province: response.province, city: response.city, adCode: response.adcode })
+            const requestLocation =[locationArr.longitude.toFixed(6), locationArr.latitude.toFixed(6)]
+            const resp = await getAdCodeByLocationApi(requestLocation)
+            const locationData = {
+                adCode: resp.regeocode.addressComponent.adcode,
+                country: resp.regeocode.addressComponent.country,
+                province: resp.regeocode.addressComponent.province,
+                city: resp.regeocode.addressComponent.city,
+                district: resp.regeocode.addressComponent.district,
+                township: resp.regeocode.addressComponent.township
+            }
+            setLocation(locationData)
+            await  setLocationByStore(locationData)
         } catch (error) {
             throw new Error(`获取地理位置失败: ${error}`)
         }

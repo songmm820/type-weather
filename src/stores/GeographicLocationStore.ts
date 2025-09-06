@@ -27,7 +27,17 @@ export async function setLocationByStore(location: GeographicLocationType) {
 export async function getLocationByStore() {
     const storeData = await geographicLocationStore.get<GeographicLocationType>(STORE_LOCATION_KEY)
     if (storeData && !Array.isArray(storeData?.adCode)) {
+        console.log('storeData', storeData)
         return Object.keys(storeData).length > 0 ? storeData : null
     }
     return null
+}
+
+
+/**
+ * 清除位置信息状态
+ */
+export async function clearLocationByStore() {
+    await geographicLocationStore.delete(STORE_LOCATION_KEY)
+    await geographicLocationStore.save()
 }
