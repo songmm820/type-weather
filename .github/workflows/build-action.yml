@@ -88,3 +88,4 @@ jobs:
           releaseBody: 'Version v${{ env.VERSION }} — built by GitHub Actions.'
           releaseDraft: false
           prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+        
