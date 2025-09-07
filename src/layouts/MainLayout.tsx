@@ -4,8 +4,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import bg from '~/assets/weather/common/background.png'
 import IconPark from '~/conponents/IconPark.tsx'
 import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
-import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
-import { useWeather } from '~/hooks/useWeather.ts'
+import { useWeather } from '~/contexts/WeatherContent.tsx'
+import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
 
 const MainLayout = () => {
     const location = useLocation()
