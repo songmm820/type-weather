@@ -2,7 +2,7 @@
  * 地理位置信息上下文配置
  */
 
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import {  getAdCodeByLocationApi } from '~/apis/amap/AmapWebApis.ts'
 import { invoke } from '@tauri-apps/api/core'
 import { InvokeConstants } from '~/constants/InvokeConstants.ts'
@@ -85,4 +85,15 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
             </GeographicLocationContext.Provider>
         </>
     )
+}
+
+
+type GeographicLocationHookType = GeographicLocationType & {
+    onGetLocation: () => Promise<void>
+}
+
+// 因为为null阻塞渲染 这里直接断言不为null
+export const useGeographicLocation = (): GeographicLocationHookType => {
+
+    return useContext(GeographicLocationContext)!
 }

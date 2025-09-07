@@ -5,14 +5,14 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import Logo from '~/pages/weather/other/WeatherLogo.tsx'
 import WeatherSearchInput from '~/pages/weather/other/WeatherSearchInput.tsx'
 import WeatherCardContainer from '~/pages/weather/other/WeatherCardContainer.tsx'
-import { useWeather } from '~/hooks/useWeather.ts'
-import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { getBackgroundByTime, getWeatherIcon, getWeatherStatus } from '~/libs/WeatherLib.ts'
-import { useSystemOSInfo } from '~/hooks/useSystemOSInfo.ts'
 import { useSearchParams } from 'react-router-dom'
 import { getAdCodeByCityNameApi, getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
 import TodayWeatherCard from '~/pages/weather/other/TodayWeatherCard.tsx'
 import TodayWeatherMood from '~/pages/weather/other/TodayWeatherMood.tsx'
+import { useSystemOSInfo } from '~/contexts/AppSystemOSInfoContext.tsx'
+import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
+import { useWeather } from '~/contexts/WeatherContent.tsx'
 
 type WeatherDetail = {
     icon: string

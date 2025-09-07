@@ -2,11 +2,11 @@
  * 天气信息上下文配置
  */
 
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
-import { useGeographicLocation } from '~/hooks/useGeographicLocation.ts'
 import { getLiveWeatherByStore, setLiveWeather } from '~/stores/WeatherStore.ts'
 import { customDayjs } from '~/libs/DateTimeLib.ts'
+import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
 
 /** 实况天气信息类型 */
 export type LiveWeatherType = {
@@ -93,4 +93,11 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
             </WeatherContext.Provider>
         </>
     )
+}
+
+
+type LiveWeatherHookType = LiveWeatherType & {}
+
+export const useWeather = (): LiveWeatherHookType => {
+    return  useContext(WeatherContext)!
 }

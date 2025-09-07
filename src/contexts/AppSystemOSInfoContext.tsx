@@ -2,7 +2,7 @@
  * 系统信息上下文
  */
 
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { getCurrentVersion, getOsInfo } from '~/libs/OsLib.ts'
 import { listen } from '@tauri-apps/api/event'
 import { customDayjs } from '~/libs/DateTimeLib.ts'
@@ -76,4 +76,18 @@ export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => 
         {/* 如果没有位置信息阻塞渲染 */}
         {systemInfo && Object.keys(systemInfo).length > 0 && children}
     </AppSystemOSInfoContext.Provider>
+}
+
+
+type SystemOSInfoHookType = AppSystemOSInfoType & {
+    onGetSystemOSInfo: () => Promise<void>
+}
+
+export const useSystemOSInfo = (): SystemOSInfoHookType => {
+    const context = useContext(AppSystemOSInfoContext)!
+
+    return {
+        ...context,
+        onGetSystemOSInfo: context.onGetSystemOSInfo
+    }
 }
