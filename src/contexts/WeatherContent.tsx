@@ -5,7 +5,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
 import { getLiveWeatherByStore, setLiveWeather } from '~/stores/WeatherStore.ts'
-import { customDayjs } from '~/libs/DateTimeLib.ts'
+import { customDayjs } from '~/libs/dateTimeLib.ts'
 import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
 
 /** 实况天气信息类型 */

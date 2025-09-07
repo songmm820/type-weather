@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { customDayjs } from '~/libs/DateTimeLib.ts'
+import { customDayjs } from '~/libs/dateTimeLib.ts'
 import classNames from 'classnames'
 import IconPark from '~/conponents/IconPark.tsx'
 import WeatherCardContainer from '~/pages/weather/other/WeatherCardContainer.tsx'

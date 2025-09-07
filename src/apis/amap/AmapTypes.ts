@@ -2,7 +2,7 @@
  * 高德地图api请求类型定义
  */
 
-import { GetProp } from '~/libs/TypeScriptLib.ts'
+import { GetProp } from '~/libs/typeScriptLib.ts'
 
 /** 高德地图api请求返回参数类型定义 */
 export type AmapWebApiResponse = {

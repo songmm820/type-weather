@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
-import { prefectureLevelCities } from '~/libs/WeatherLib.ts'
+import { prefectureLevelCities } from '~/libs/weatherLib.ts'
 
 const WeatherSearchInput = ({ value = '', placeholder, onSearch }: { value?: string; placeholder?: string; onSearch?: (e: string) => void }) => {
     // 提示值ref

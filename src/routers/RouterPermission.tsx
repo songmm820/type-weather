@@ -4,7 +4,7 @@
 
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getPermissionAuth } from '~/libs/PermissionAuthenticationLib.ts'
+import { getPermissionAuth } from '~/libs/permissionAuthenticationLib.ts'
 
 /** 标题前缀 */
 const DEFAULT_TITLE_PREFIX = 'TypeWeather - '

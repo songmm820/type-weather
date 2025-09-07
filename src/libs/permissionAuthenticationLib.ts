@@ -2,7 +2,7 @@
  * 权限工具类
  */
 
-import { LocalStorageInstance } from '~/libs/StorageLib.ts'
+import { LocalStorageInstance } from '~/libs/storageLib.ts'
 
 /* Auth sign Key */
 export const AUTH_SIGN_KEY: string = 'AUTH_SIGN_TOKEN'

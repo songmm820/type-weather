@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react'
 import { WeatherInfoType } from '~/pages/weather/other/WeatherSearchDetailPage.tsx'
-import { customDayjs } from '~/libs/DateTimeLib.ts'
+import { customDayjs } from '~/libs/dateTimeLib.ts'
 
 const TodayWeatherMood = memo(function TodayWeatherMood(props: { weatherInfo: WeatherInfoType }) {
     const { weatherInfo } = props

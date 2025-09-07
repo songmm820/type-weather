@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom/client'
 import App from '~/App.tsx'
 import { ThemeModeEnum } from '~/constants/AppConstants.ts'
-import '~/libs/AutoCheckUpdateOSLib.ts'
+import '~/libs/autoCheckUpdateOSLib.ts'
 
 // 设置默认暗色主题（html的data-theme属性）
 document.documentElement.setAttribute('data-theme', ThemeModeEnum.DARK)
