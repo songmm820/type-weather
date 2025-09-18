@@ -2,7 +2,6 @@
  * 高德地图api请求类型定义
  */
 
-import { GetProp } from '~/libs/typeScriptLib.ts'
 
 /** 高德地图api请求返回参数类型定义 */
 export type AmapWebApiResponse = {
@@ -47,7 +46,7 @@ export type AmapWebApiWeatherRequestParams = {
     /** 高德地图api key */
     key: string
     /** 城市行政区划编码 */
-    city: GetProp<AmapWebApiIpResponse, 'adcode'>
+    city: string
     /** 气象类型 base: 实况天气， all：预测天气 */
     extensions: 'base' | 'all'
 }

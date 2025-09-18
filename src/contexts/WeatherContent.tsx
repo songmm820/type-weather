@@ -4,9 +4,9 @@
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
-import { getLiveWeatherByStore, setLiveWeather } from '~/stores/WeatherStore.ts'
 import { customDayjs } from '~/libs/dateTimeLib.ts'
 import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
+import { getLiveWeatherByStore, setLiveWeather } from '~/stores/WeatherStore'
 
 /** 实况天气信息类型 */
 export type LiveWeatherType = {
@@ -95,9 +95,8 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
     )
 }
 
-
 type LiveWeatherHookType = LiveWeatherType & {}
 
 export const useWeather = (): LiveWeatherHookType => {
-    return  useContext(WeatherContext)!
+    return useContext(WeatherContext)!
 }

@@ -3,10 +3,9 @@
  */
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import {  getAdCodeByLocationApi } from '~/apis/amap/AmapWebApis.ts'
+import { getAdCodeByLocationApi } from '~/apis/amap/AmapWebApis.ts'
 import { invoke } from '@tauri-apps/api/core'
 import { InvokeConstants } from '~/constants/InvokeConstants.ts'
-import { getLocationByStore, setLocationByStore } from '~/stores/GeographicLocationStore.ts'
 
 /** 地理信息类型 */
 export type GeographicLocationType = {
@@ -21,7 +20,7 @@ export type GeographicLocationType = {
     /** 区 */
     district: string
     /** 街道 */
-    township:string
+    township: string
 }
 
 /** 地理位置上下文类型 */
@@ -39,23 +38,14 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
 
     /**
      * 获取位置信息
-     *
-     * 说明：这里的位置信息，只有首次会通过经纬度获取城市信息
-     * 后续都会从Store从获取，如果Store中没有，则重新发起定位重新获取。
      */
     const onGetLocation = async () => {
         try {
-            // 首先从状态中获取位置信息
-            const locationStoreData = await getLocationByStore()
-            if (locationStoreData) {
-                setLocation(locationStoreData)
-                return
-            }
-            const locationArr = await invoke(InvokeConstants.GET_LOCATION) as {
+            const locationArr = (await invoke(InvokeConstants.GET_LOCATION)) as {
                 longitude: number
                 latitude: number
             }
-            const requestLocation =[locationArr.longitude.toFixed(6), locationArr.latitude.toFixed(6)]
+            const requestLocation = [locationArr.longitude.toFixed(6), locationArr.latitude.toFixed(6)]
             const resp = await getAdCodeByLocationApi(requestLocation)
             const locationData = {
                 adCode: resp.regeocode.addressComponent.adcode,
@@ -66,7 +56,6 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
                 township: resp.regeocode.addressComponent.township
             }
             setLocation(locationData)
-            await  setLocationByStore(locationData)
         } catch (error) {
             throw new Error(`获取地理位置失败: ${error}`)
         }
@@ -87,13 +76,11 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
     )
 }
 
-
 type GeographicLocationHookType = GeographicLocationType & {
     onGetLocation: () => Promise<void>
 }
 
 // 因为为null阻塞渲染 这里直接断言不为null
 export const useGeographicLocation = (): GeographicLocationHookType => {
-
     return useContext(GeographicLocationContext)!
 }

@@ -7,25 +7,21 @@ import { createHashRouter, Navigate } from 'react-router-dom'
 import { LazyImportComponent } from '~/routers/RouterLazyLoad.tsx'
 import { lazy } from 'react'
 import MainLayout from '~/layouts/MainLayout.tsx'
-import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
+import { RouterConstants } from '~/constants/RouterConstants'
 
 const router = createHashRouter([
     {
-        path: RouterConstantsEnum.ROOT,
+        path: RouterConstants.ROOT,
         element: <MainLayout />,
         children: [
-            { index: true, element: <Navigate to={RouterConstantsEnum.WEATHER} replace /> },
+            { index: true, element: <Navigate to={RouterConstants.HOME} replace /> },
             {
-                path: RouterConstantsEnum.WEATHER,
-                element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/weather/WeatherHomePage'))} isRequiredAuth={false} title="天气详情" />
+                path: RouterConstants.HOME,
+                element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/HomePage'))} isRequiredAuth={false} />
             },
             {
-                path: RouterConstantsEnum.WEATHER_DETAIL,
-                element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/weather/other/WeatherSearchDetailPage'))} isRequiredAuth={false} title="天气详情" />
-            },
-            {
-                path: RouterConstantsEnum.SYSTEM_SETTING,
-                element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/SystemSettingPage'))} isRequiredAuth={false} title="系统设置" />
+                path: RouterConstants.SYSTEM_SETTING,
+                element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/SystemSettingPage'))} isRequiredAuth={false} />
             },
             { path: '*', element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/404NotFoundPage'))} isRequiredAuth={false} title="404" /> }
         ]

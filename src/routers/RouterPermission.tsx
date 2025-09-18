@@ -4,12 +4,7 @@
 
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getPermissionAuth } from '~/libs/permissionAuthenticationLib.ts'
-
-/** 标题前缀 */
-const DEFAULT_TITLE_PREFIX = 'TypeWeather - '
-/** 默认标题 */
-const DEFAULT_TITLE = '情绪玻璃'
+import { getPermissionAuth } from '~/libs/permissionLib'
 
 /**
  * 一个权限控制路由组件 RouterPermission
@@ -28,7 +23,7 @@ export type IPermissionRouterProps = {
 }
 
 export function RouterPermission(props: IPermissionRouterProps) {
-    const { children, isRequiredAuth = true, title = DEFAULT_TITLE } = props
+    const { children, isRequiredAuth = true } = props
 
     // Hook for navigation
     const navigate = useNavigate()
@@ -36,15 +31,13 @@ export function RouterPermission(props: IPermissionRouterProps) {
     const localPermissionAuthData = getPermissionAuth()
 
     useEffect(() => {
-        // 页面挂载时，设置页面标题
-        document.title = `${DEFAULT_TITLE_PREFIX + title}`
         // 如果需要权限认证，并且本地存储中没有认证信息，则跳转到登录页面
         if (isRequiredAuth) {
             if (!localPermissionAuthData) {
                 // console.log('跳转到登录页面')
             }
         }
-    }, [isRequiredAuth, title, navigate])
+    }, [isRequiredAuth, navigate])
 
     return <>{children}</>
 }

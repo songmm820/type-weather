@@ -3,9 +3,9 @@ import { memo } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import bg from '~/assets/weather/common/background.png'
 import IconPark from '~/conponents/IconPark.tsx'
-import { RouterConstantsEnum } from '~/constants/RouterConstants.ts'
 import { useWeather } from '~/contexts/WeatherContent.tsx'
 import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
+import { RouterConstants } from '~/constants/RouterConstants'
 
 const MainLayout = () => {
     const location = useLocation()
@@ -14,7 +14,7 @@ const MainLayout = () => {
     // 判断当前是否还可以返回
     const isCanBack = () => {
         // 当前路由不为首页
-        return location.pathname !== RouterConstantsEnum.WEATHER
+        return location.pathname !== RouterConstants.HOME
     }
 
     // 返回上一页
@@ -24,7 +24,7 @@ const MainLayout = () => {
 
     // 设置
     const onSetting = () => {
-        navigate(RouterConstantsEnum.SYSTEM_SETTING)
+        navigate(RouterConstants.SYSTEM_SETTING)
     }
 
     return (
@@ -51,7 +51,7 @@ const MainLayout = () => {
                         </div>
                     )}
 
-                    {location.pathname !== RouterConstantsEnum.SYSTEM_SETTING && (
+                    {location.pathname !== RouterConstants.SYSTEM_SETTING && (
                         <div className="cursor-pointer h-full t-f-center rounded-sm px-2 py-1 t-f-center gap-1" onClick={onSetting}>
                             <IconPark icon="setting-two" size={15} />
                             <span className="text-small">设置</span>
