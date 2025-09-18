@@ -1,7 +1,9 @@
-// src/layouts/MainLayout.tsx
+/**
+ * Main Layout 布局
+ */
+
 import { memo } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import bg from '~/assets/weather/common/background.png'
 import IconPark from '~/conponents/IconPark.tsx'
 import { useWeather } from '~/contexts/WeatherContent.tsx'
 import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
@@ -28,7 +30,7 @@ const MainLayout = () => {
     }
 
     return (
-        <div className="w-full h-full flex flex-col" style={{ backgroundImage: `url(${bg})` }}>
+        <div className="w-full h-full flex flex-col">
             {/* 路由页面渲染区域 */}
             <div className="@container flex-1">
                 <Outlet />

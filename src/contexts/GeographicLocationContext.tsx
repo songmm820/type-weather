@@ -9,7 +9,7 @@ import { InvokeConstants } from '~/constants/InvokeConstants.ts'
 
 /** 地理信息类型 */
 export type GeographicLocationType = {
-    /** 城市编码 (对应高德地图) */
+    /** 城市编码 */
     adCode: string
     /** 国家 */
     country: string

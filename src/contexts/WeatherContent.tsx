@@ -23,7 +23,7 @@ export type LiveWeatherType = {
     /** 数据观测时间 */
     reportTime: string
     /** 请求时间 YYYY-MM-DD HH:mm:ss */
-    requestTime: string | null
+    requestTime: string
 }
 
 /** 地理位置上下文类型 */
