@@ -1,5 +1,5 @@
 <!-- 文件名：README.md -->
-#  TypeWeather
+#  ASYBH
 
 > 把天气画在桌面这块画布上，让每一天都有独一无二的风景。
 
@@ -7,8 +7,7 @@
 
 ## 🚀 项目简介
 <p>
-TypeWeather（情绪玻璃）是一款基于 **Tauri + React + TypeScript** 的跨平台桌面应用。<br/>
-它将实时天气数据转化为可视、可交互、可回忆的桌面体验：毛玻璃雨滴、阳光色温条、桌面小宠物、番茄钟、节能提醒、远程办公预警……一年后“时间胶囊”告诉你去年今天的天气与心情。<br/>
+一款基于 **Tauri + React + TypeScript** 的跨平台桌面应用。<br/>
 零后端、一键安装、插件化架构，支持 Windows / macOS / Linux。
 </p>
 
@@ -17,7 +16,6 @@ TypeWeather（情绪玻璃）是一款基于 **Tauri + React + TypeScript** 的�
 ## ✨ 核心功能一览
 | 功能 | 一句话描述 |
 |---|---|
-| 💢 情绪玻璃 | 全屏毛玻璃，实时叠加天气粒子（雨/雪/落叶），湿度高时玻璃起雾 |
 | ☀️ 阳光进度条 | 2 px 顶部色温条，随太阳高度角变色，雷雨时闪电提醒 |
 | 🐱 桌面宠物 | 64×64 像素小伙伴，根据 AQI 换口罩，下雪变雪人 |
 | 📦 时间胶囊 | 每天 0 点自动存档天气，一年后弹出“去年的今天” |
@@ -46,9 +44,9 @@ TypeWeather（情绪玻璃）是一款基于 **Tauri + React + TypeScript** 的�
 ## 🚦 快速开始
 
 ### 1. 克隆仓库
-`git clone https://github.com/songmm820/TypeWeather.git`
+`git clone https://github.com/songmm820/asybh.git`
 
-`cd QingClass`
+`cd asybh`
 
 ### 2. 安装依赖
 `pnpm install`                 # 前端

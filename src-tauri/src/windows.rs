@@ -13,7 +13,7 @@ where
         .decorations(true)
         .shadow(false)
         .theme(Some(tauri::Theme::Dark))
-        .title("TypeWeather")
+        .title("ASYBH")
         .resizable(true)
         .center()
         .devtools(true)
