@@ -15,7 +15,13 @@ type Transport = (level: LogLevel, message: string) => void | Promise<void>
 const transports: Transport[] = [
     // ① Tauri 官方插件（文件 + stdout）
     (lvl, msg) => {
-        const fn = { ERROR: error, WARN: warn, INFO: info, DEBUG: debug, TRACE: trace }[lvl]
+        const fn = {
+            ERROR: error,
+            WARN: warn,
+            INFO: info,
+            DEBUG: debug,
+            TRACE: trace
+        }[lvl]
         fn(msg) // 异步，不 await
     }
     // ② SQLite（可选）

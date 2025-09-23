@@ -21,7 +21,13 @@ function IconPark(props: IconParkProps) {
 
     return (
         <>
-            <svg aria-hidden={true} style={{ color: iconColor }} width={iconSize} height={iconSize} onClick={handleClick}>
+            <svg
+                aria-hidden={true}
+                style={{ color: iconColor }}
+                width={iconSize}
+                height={iconSize}
+                onClick={handleClick}
+            >
                 <use xlinkHref={`#${props.icon}`}></use>
             </svg>
         </>

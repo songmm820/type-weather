@@ -21,7 +21,10 @@ export class AxiosClientClass<R = BaseResponseData> {
         // 全局请求拦截
         this.instance.interceptors.request.use(requestInterceptorsConfig, requestInterceptorsError)
         // 全局响应拦截
-        this.instance.interceptors.response.use(responseInterceptorsConfig, responseInterceptorsError)
+        this.instance.interceptors.response.use(
+            responseInterceptorsConfig,
+            responseInterceptorsError
+        )
     }
 
     // 封装get请求

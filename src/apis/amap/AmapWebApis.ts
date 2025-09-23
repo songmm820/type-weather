@@ -3,7 +3,13 @@
  */
 
 import { AxiosClientClass } from '~/network/RequestConfig.ts'
-import { AmapWebApiIpResponse, AmapWebApiRegeoResponse, AmapWebApiResponse, AmapWebApiWeatherRequestParams, AmapWebApiWeatherResponse } from '~/apis/amap/AmapTypes.ts'
+import {
+    AmapWebApiIpResponse,
+    AmapWebApiRegeoResponse,
+    AmapWebApiResponse,
+    AmapWebApiWeatherRequestParams,
+    AmapWebApiWeatherResponse
+} from '~/apis/amap/AmapTypes.ts'
 
 /** WebApi Key */
 const WEB_API_KEY = import.meta.env.VITE_APP_MAP_KEY
@@ -28,7 +34,10 @@ export function getLocationByIpApi(ip?: string) {
         key: WEB_API_KEY,
         ip: ip
     }
-    return amapWebApiInstance.get<{ ip?: string }, AmapWebApiResponse & AmapWebApiIpResponse>('/ip', params)
+    return amapWebApiInstance.get<{ ip?: string }, AmapWebApiResponse & AmapWebApiIpResponse>(
+        '/ip',
+        params
+    )
 }
 
 /**
@@ -45,7 +54,10 @@ export function getWeatherInfoByAdCodeApi(adCode: string, extensions: 'base' | '
         city: adCode,
         extensions: extensions
     }
-    return amapWebApiInstance.get<AmapWebApiWeatherRequestParams, AmapWebApiResponse & AmapWebApiWeatherResponse>('/weather/weatherInfo', params)
+    return amapWebApiInstance.get<
+        AmapWebApiWeatherRequestParams,
+        AmapWebApiResponse & AmapWebApiWeatherResponse
+    >('/weather/weatherInfo', params)
 }
 
 /**

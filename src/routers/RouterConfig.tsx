@@ -14,16 +14,38 @@ const router = createHashRouter([
         path: RouterConstants.ROOT,
         element: <MainLayout />,
         children: [
-            { index: true, element: <Navigate to={RouterConstants.HOME} replace /> },
+            {
+                index: true,
+                element: <Navigate to={RouterConstants.HOME} replace />
+            },
             {
                 path: RouterConstants.HOME,
-                element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/HomePage'))} isRequiredAuth={false} />
+                element: (
+                    <LazyImportComponent
+                        lazyChildren={lazy(() => import('~/pages/HomePage'))}
+                        isRequiredAuth={false}
+                    />
+                )
             },
             {
                 path: RouterConstants.SYSTEM_SETTING,
-                element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/SystemSettingPage'))} isRequiredAuth={false} />
+                element: (
+                    <LazyImportComponent
+                        lazyChildren={lazy(() => import('~/pages/SystemSettingPage'))}
+                        isRequiredAuth={false}
+                    />
+                )
             },
-            { path: '*', element: <LazyImportComponent lazyChildren={lazy(() => import('~/pages/404NotFoundPage'))} isRequiredAuth={false} title="404" /> }
+            {
+                path: '*',
+                element: (
+                    <LazyImportComponent
+                        lazyChildren={lazy(() => import('~/pages/404NotFoundPage'))}
+                        isRequiredAuth={false}
+                        title="404"
+                    />
+                )
+            }
         ]
     }
 ])

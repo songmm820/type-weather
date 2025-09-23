@@ -51,7 +51,10 @@ export type AmapWebApiWeatherRequestParams = {
 }
 
 /** 实况天气信息响应数据 */
-export type AmapWebApiWeatherLiveResponse = Pick<AmapWebApiIpResponse, 'province' | 'city' | 'adcode'> & {
+export type AmapWebApiWeatherLiveResponse = Pick<
+    AmapWebApiIpResponse,
+    'province' | 'city' | 'adcode'
+> & {
     /** 天气现象（汉字描述）*/
     readonly weather: string
     /** 实时气温，单位：摄氏度 */
@@ -67,7 +70,10 @@ export type AmapWebApiWeatherLiveResponse = Pick<AmapWebApiIpResponse, 'province
 }
 
 /** 预报天气信息数据 */
-export type AmapWebApiWeatherForecastResponse = Pick<AmapWebApiIpResponse, 'province' | 'city' | 'adcode'> & {
+export type AmapWebApiWeatherForecastResponse = Pick<
+    AmapWebApiIpResponse,
+    'province' | 'city' | 'adcode'
+> & {
     /** 数据观测时间 */
     readonly reporttime: string
     /** 预报数据 list 结构，元素 cast,按顺序为当天、第二天、第三天的预报数据 */

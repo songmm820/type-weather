@@ -5,8 +5,8 @@
 import { memo } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import IconPark from '~/components/widget/IconPark'
-import { useWeather } from '~/contexts/WeatherContent.tsx'
-import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
+import { useWeather } from '~/contexts/WeatherProvider'
+import { useGeographicLocation } from '~/contexts/GeographicLocationProvider'
 import { RouterConstants } from '~/constants/RouterConstants'
 
 const MainLayout = () => {
@@ -47,14 +47,20 @@ const MainLayout = () => {
                 {/* 右侧导航栏 */}
                 <div className="h-full flex gap-4">
                     {isCanBack() && (
-                        <div className="cursor-pointer h-full t-f-center rounded-sm px-2 py-1" onClick={onGoBack}>
+                        <div
+                            className="cursor-pointer h-full t-f-center rounded-sm px-2 py-1"
+                            onClick={onGoBack}
+                        >
                             <IconPark icon="left-small" size={18} />
                             <span className="text-small">返回上一页</span>
                         </div>
                     )}
 
                     {location.pathname !== RouterConstants.SYSTEM_SETTING && (
-                        <div className="cursor-pointer h-full t-f-center rounded-sm px-2 py-1 t-f-center gap-1" onClick={onSetting}>
+                        <div
+                            className="cursor-pointer h-full t-f-center rounded-sm px-2 py-1 t-f-center gap-1"
+                            onClick={onSetting}
+                        >
                             <IconPark icon="setting-two" size={15} />
                             <span className="text-small">设置</span>
                         </div>

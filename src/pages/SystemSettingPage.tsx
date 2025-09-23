@@ -5,7 +5,7 @@
 import { ask } from '@tauri-apps/plugin-dialog'
 import { useEffect, useState } from 'react'
 import { Update } from '@tauri-apps/plugin-updater'
-import { checkUpdateOS, downloadAndInstall, getCurrentVersion } from '~/libs/osLib.ts'
+import { checkUpdateOS, downloadAndInstall, getCurrentVersion } from '~/lib/osLib'
 
 const SystemSettingPage = () => {
     // 当前版本号
@@ -45,7 +45,10 @@ const SystemSettingPage = () => {
     return (
         <div className="w-full h-full flex flex-col items-center justify-center gap-4 p-4.5">
             <div>当前版本：{currentVersion}</div>
-            <div className="cursor-pointer flex flex-col items-center justify-center gap-4" onClick={onCheckUpdate}>
+            <div
+                className="cursor-pointer flex flex-col items-center justify-center gap-4"
+                onClick={onCheckUpdate}
+            >
                 <div>检查更新</div>
                 {downloadPercent !== null && <div>下载进度：{downloadPercent}%</div>}
             </div>

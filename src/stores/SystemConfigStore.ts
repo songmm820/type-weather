@@ -4,7 +4,7 @@
  * 需要权限 （ store:default ）
  */
 import { LazyStore } from '@tauri-apps/plugin-store'
-import { LiveWeatherType } from '~/contexts/WeatherContent.tsx'
+import { LiveWeatherType } from '~/contexts/WeatherProvider'
 
 type SystemConfigType = {
     /** 实时天气信息 */

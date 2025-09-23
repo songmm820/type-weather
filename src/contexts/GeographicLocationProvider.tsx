@@ -34,7 +34,10 @@ export const GeographicLocationContext = createContext<GeographicLocationContext
 // 创建位置提供者组件
 export const GeographicLocationProvider = ({ children }: { children: ReactNode }) => {
     // 位置信息
-    const [location, setLocation] = useState<Omit<GeographicLocationContext, 'onGetLocation'> | null>(null)
+    const [location, setLocation] = useState<Omit<
+        GeographicLocationContext,
+        'onGetLocation'
+    > | null>(null)
 
     /**
      * 获取位置信息
@@ -45,7 +48,10 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
                 longitude: number
                 latitude: number
             }
-            const requestLocation = [locationArr.longitude.toFixed(6), locationArr.latitude.toFixed(6)]
+            const requestLocation = [
+                locationArr.longitude.toFixed(6),
+                locationArr.latitude.toFixed(6)
+            ]
             const resp = await getAdCodeByLocationApi(requestLocation)
             const locationData = {
                 adCode: resp.regeocode.addressComponent.adcode,
@@ -68,7 +74,9 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
 
     return (
         <>
-            <GeographicLocationContext.Provider value={location ? { ...location, onGetLocation } : null}>
+            <GeographicLocationContext.Provider
+                value={location ? { ...location, onGetLocation } : null}
+            >
                 {/* 如果没有位置信息阻塞渲染 */}
                 {location && Object.keys(location).length > 0 && children}
             </GeographicLocationContext.Provider>

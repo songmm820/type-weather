@@ -3,9 +3,9 @@
  */
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { getCurrentVersion, getOsInfo } from '~/libs/osLib.ts'
+import { getCurrentVersion, getOsInfo } from '~/lib/osLib'
 import { listen } from '@tauri-apps/api/event'
-import { customDayjs } from '~/libs/dateTimeLib.ts'
+import { customDayjs } from '~/lib/dateTimeLib'
 import { TAURI_LISTEN } from '~/constants/TauriConstants'
 
 /** 系统信息类型 */
@@ -41,7 +41,10 @@ export const AppSystemOSInfoContext = createContext<AppSystemOSInfoContext | nul
 // 创建系统信息提供者组件
 export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => {
     // 获取系统信息
-    const [systemInfo, setSystemInfo] = useState<Omit<AppSystemOSInfoContext, 'onGetSystemOSInfo' | 'systemTime'> | null>(null)
+    const [systemInfo, setSystemInfo] = useState<Omit<
+        AppSystemOSInfoContext,
+        'onGetSystemOSInfo' | 'systemTime'
+    > | null>(null)
 
     // 默认取当前时间 年月日时分
     const year = customDayjs().format('YYYY')
@@ -57,7 +60,16 @@ export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => 
     const onGetSystemOSInfo = async () => {
         const { osType, platform, family, version, arch, locale, hostname } = await getOsInfo()
         const appVersion = await getCurrentVersion()
-        setSystemInfo({ osType, platform, family, version, arch, locale, hostname, appVersion })
+        setSystemInfo({
+            osType,
+            platform,
+            family,
+            version,
+            arch,
+            locale,
+            hostname,
+            appVersion
+        })
     }
 
     // 初始化获取系统信息
@@ -74,7 +86,9 @@ export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => 
     }, [])
 
     return (
-        <AppSystemOSInfoContext.Provider value={systemInfo ? { ...systemInfo, systemTime, onGetSystemOSInfo } : null}>
+        <AppSystemOSInfoContext.Provider
+            value={systemInfo ? { ...systemInfo, systemTime, onGetSystemOSInfo } : null}
+        >
             {/* 如果没有位置信息阻塞渲染 */}
             {systemInfo && Object.keys(systemInfo).length > 0 && children}
         </AppSystemOSInfoContext.Provider>

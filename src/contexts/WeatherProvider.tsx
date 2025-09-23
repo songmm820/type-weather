@@ -4,8 +4,8 @@
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
-import { customDayjs } from '~/libs/dateTimeLib.ts'
-import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
+import { customDayjs } from '~/lib/dateTimeLib'
+import { useGeographicLocation } from '~/contexts/GeographicLocationProvider'
 
 /** 实况天气信息类型 */
 export type LiveWeatherType = {
@@ -25,20 +25,22 @@ export type LiveWeatherType = {
     requestTime: string
 }
 
-/** 地理位置上下文类型 */
-export type WeatherTypeContext = LiveWeatherType & {
+/** 天气上下文类型 */
+export type WeatherContext = LiveWeatherType & {
     /** 获取实况天气信息函数 */
     onGetLiveWeather: () => Promise<void>
 }
 
-export const WeatherContext = createContext<WeatherTypeContext | null>(null)
+export const WeatherContext = createContext<WeatherContext | null>(null)
 
 // 创建位置提供者组件
 export const WeatherProvider = ({ children }: { children: ReactNode }) => {
     // 位置信息上下文
     const locationCtx = useGeographicLocation()
     // 位置信息
-    const [weather, setWeather] = useState<Omit<WeatherTypeContext, 'onGetLiveWeather'> | null>(null)
+    const [weather, setWeather] = useState<Omit<WeatherContext, 'onGetLiveWeather'> | null>(
+        null
+    )
 
     /**
      * 获取实况天气信息
