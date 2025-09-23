@@ -3,9 +3,9 @@
  */
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { getCurrentVersion, getOsInfo } from '~/lib/osLib'
+import { getCurrentVersion, getOsInfo } from '~/libs/osLib'
 import { listen } from '@tauri-apps/api/event'
-import { customDayjs } from '~/lib/dateTimeLib'
+import { customDayjs } from '~/libs/dateTimeLib'
 import { TAURI_LISTEN } from '~/constants/TauriConstants'
 
 /** 系统信息类型 */
