@@ -7,13 +7,14 @@ import { WeatherProvider } from '~/contexts/WeatherContent.tsx'
 
 const App = () => {
     return (
-        <AppSystemInfoProvider>
-            <GeographicLocationProvider>
-                <WeatherProvider>
-                    <RouterProvider router={router} />
-                </WeatherProvider>
-            </GeographicLocationProvider>
-        </AppSystemInfoProvider>
+        // <AppSystemInfoProvider>
+        //     <GeographicLocationProvider>
+        //         <WeatherProvider>
+        //             <RouterProvider router={router} />
+        //         </WeatherProvider>
+        //     </GeographicLocationProvider>
+        // </AppSystemInfoProvider>
+        <RouterProvider router={router} />
     )
 }
 

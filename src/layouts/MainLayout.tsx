@@ -4,7 +4,7 @@
 
 import { memo } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import IconPark from '~/conponents/IconPark.tsx'
+import IconPark from '~/components/widget/IconPark'
 import { useWeather } from '~/contexts/WeatherContent.tsx'
 import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
 import { RouterConstants } from '~/constants/RouterConstants'
