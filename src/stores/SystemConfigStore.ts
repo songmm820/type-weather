@@ -18,7 +18,7 @@ const systemStore = new LazyStore('system-config.json')
 
 /**
  * 存储系统配置
- * 
+ *
  * @param systemConfig 系统配置
  */
 export async function setSystemConfig(systemConfig: SystemConfigType) {

@@ -19,7 +19,7 @@ bracketSpacing: true
 # 在函数名和开括号之间是否加空格 可选值是"avoid"（只在需要时添加括号）
 arrowParens: always
 # 在对象字面量声明所使用的的花括号后（Object Literal）加空格
-quoteProps: "as-needed"
+quoteProps: 'as-needed'
 # 多属性html标签的‘>’折行放置
 jsxBracketSameLine: false
 # 为了确保每个 HTML、Vue 和 JSX 元素的属性始终单独占据一行

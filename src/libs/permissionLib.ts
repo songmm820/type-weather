@@ -2,8 +2,7 @@
  * 权限工具类
  */
 
-import { customLocalStorage } from "./storageLib"
-
+import { customLocalStorage } from './storageLib'
 
 /* Auth sign Key */
 export const AUTH_SIGN_KEY: string = 'AUTH_SIGN_TOKEN'

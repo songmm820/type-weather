@@ -9,7 +9,6 @@ import duration from 'dayjs/plugin/duration'
 import isToday from 'dayjs/plugin/isToday'
 import 'dayjs/locale/zh-cn'
 
-
 dayjs.locale('zh-cn')
 // utc时间格式化
 dayjs.extend(utc)

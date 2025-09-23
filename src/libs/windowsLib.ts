@@ -14,13 +14,13 @@ type CreateWindowParams = ConstructorParameters<typeof WebviewWindow>
 export async function createWindow(label: CreateWindowParams[0], options: CreateWindowParams[1]) {
     const webview = new WebviewWindow(label, options)
 
-    await webview.once('tauri://created', event => {
+    await webview.once('tauri://created', (event) => {
         // eslint-disable-next-line no-console
         console.log('窗口创建成功!', event)
     })
 
     // 监听错误事件
-    await webview.once('tauri://error', e => {
+    await webview.once('tauri://error', (e) => {
         // eslint-disable-next-line no-console
         console.error('窗口创建失败:', e)
     })

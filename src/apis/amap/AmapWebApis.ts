@@ -73,7 +73,6 @@ export function getAdCodeByCityNameApi(cityName: string) {
     >('/geocode/geo', params)
 }
 
-
 /**
  * 逆地理编码（根据经纬度获取相应的adcode）
  *
@@ -81,13 +80,16 @@ export function getAdCodeByCityNameApi(cityName: string) {
  *
  * @param location 经纬度数组
  */
-export function getAdCodeByLocationApi(location:string[]) {
+export function getAdCodeByLocationApi(location: string[]) {
     const params = {
         key: WEB_API_KEY,
-        location: location.join(",")
+        location: location.join(',')
     }
-    return amapWebApiInstance.get<{
-        key:string,
-        location:string
-    },AmapWebApiResponse & AmapWebApiRegeoResponse>("geocode/regeo",params)
+    return amapWebApiInstance.get<
+        {
+            key: string
+            location: string
+        },
+        AmapWebApiResponse & AmapWebApiRegeoResponse
+    >('geocode/regeo', params)
 }

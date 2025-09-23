@@ -4,6 +4,7 @@
     "version": "alpha-1.0.1",
     "type": "module",
     "scripts": {
+        "format": "prettier --write .",
         "dev": "vite",
         "lint": "eslint src --fix",
         "build": "tsc && vite build",

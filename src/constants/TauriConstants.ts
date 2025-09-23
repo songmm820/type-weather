@@ -14,7 +14,6 @@ export const TAURI_INVOKE = {
     GET_LOCATION: 'get_windows_position'
 } as const
 
-
 /**
  * listen 通信常量
  */

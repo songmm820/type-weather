@@ -1,50 +1,50 @@
 name: Sync GitHub Release to Gitee
 
 on:
-  release:
-    types: [published]   # 仅在 GitHub release 发布时触发
+    release:
+        types: [published] # 仅在 GitHub release 发布时触发
 
 jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      # 1. 检出代码（为了拿到版本号）
-      - name: Checkout
-        uses: actions/checkout@v4
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+            # 1. 检出代码（为了拿到版本号）
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      # 2. 下载 GitHub release 里的所有附件
-      - name: Download release assets
-        uses: robinraju/release-downloader@v1
-        with:
-          repository: ${{ github.repository }}
-          tag: ${{ github.event.release.tag_name }}
-          filename: "*"
-          out-file-path: release-assets
+            # 2. 下载 GitHub release 里的所有附件
+            - name: Download release assets
+              uses: robinraju/release-downloader@v1
+              with:
+                  repository: ${{ github.repository }}
+                  tag: ${{ github.event.release.tag_name }}
+                  filename: '*'
+                  out-file-path: release-assets
 
-      # 3. 安装 gitee-release-cli
-      - name: Install gitee-release-cli
-        run: npm i -g gitee-release-cli
+            # 3. 安装 gitee-release-cli
+            - name: Install gitee-release-cli
+              run: npm i -g gitee-release-cli
 
-      # 4. 同步到 Gitee
-      - name: Create / upload release to Gitee
-        env:
-          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
-          GITEE_USER:  ${{ secrets.GITEE_USER }}
-          GITEE_REPO:  ${{ secrets.GITEE_REPO }}
-          TAG:         ${{ github.event.release.tag_name }}
-        run: |
-          # 如果 release 已存在会 422，忽略
-          gitee-release-cli create \
-            --owner "$GITEE_USER" \
-            --repo "$GITEE_REPO" \
-            --tag "$TAG" \
-            --name "$TAG" \
-            --body "${{ github.event.release.body }}" \
-            --token "$GITEE_TOKEN" || true
+            # 4. 同步到 Gitee
+            - name: Create / upload release to Gitee
+              env:
+                  GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+                  GITEE_USER: ${{ secrets.GITEE_USER }}
+                  GITEE_REPO: ${{ secrets.GITEE_REPO }}
+                  TAG: ${{ github.event.release.tag_name }}
+              run: |
+                  # 如果 release 已存在会 422，忽略
+                  gitee-release-cli create \
+                    --owner "$GITEE_USER" \
+                    --repo "$GITEE_REPO" \
+                    --tag "$TAG" \
+                    --name "$TAG" \
+                    --body "${{ github.event.release.body }}" \
+                    --token "$GITEE_TOKEN" || true
 
-          gitee-release-cli upload \
-            --owner "$GITEE_USER" \
-            --repo "$GITEE_REPO" \
-            --tag "$TAG" \
-            --token "$GITEE_TOKEN" \
-            --dir release-assets
+                  gitee-release-cli upload \
+                    --owner "$GITEE_USER" \
+                    --repo "$GITEE_REPO" \
+                    --tag "$TAG" \
+                    --token "$GITEE_TOKEN" \
+                    --dir release-assets

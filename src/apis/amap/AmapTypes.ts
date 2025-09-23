@@ -2,7 +2,6 @@
  * 高德地图api请求类型定义
  */
 
-
 /** 高德地图api请求返回参数类型定义 */
 export type AmapWebApiResponse = {
     /** 返回结果状态值 值为0或1,0表示失败；1表示成功*/
@@ -103,7 +102,6 @@ export type AmapWebApiWeatherResponse = {
     /** 预报天气信息数据 */
     forecast?: AmapWebApiWeatherForecastResponse[]
 }
-
 
 /** 逆地理编码 响应参数 */
 export type AmapWebApiRegeoResponse = {

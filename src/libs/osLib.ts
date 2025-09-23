@@ -66,7 +66,7 @@ export async function checkUpdateOS(): Promise<Update | 'NO_UPDATE'> {
  * @param update 更新器
  * @param setPercent 设置下载进度
  */
-export async function downloadAndInstall(update:Update,setPercent: (percent: number) => void): Promise<void> {
+export async function downloadAndInstall(update: Update, setPercent: (percent: number) => void): Promise<void> {
     // 当前下载量
     let downloaded = 0
     // 总下载量
@@ -78,12 +78,8 @@ export async function downloadAndInstall(update:Update,setPercent: (percent: num
                 contentLength = e.data.contentLength ?? 0
                 break
             case 'Progress':
-                downloaded += e.data.chunkLength;
-                setPercent(
-                    contentLength
-                        ? Number(Math.min((downloaded / contentLength) * 100, 100).toFixed(2))
-                        : 0
-                );
+                downloaded += e.data.chunkLength
+                setPercent(contentLength ? Number(Math.min((downloaded / contentLength) * 100, 100).toFixed(2)) : 0)
                 break
             case 'Finished':
                 setPercent(100)

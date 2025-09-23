@@ -73,12 +73,13 @@ export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => 
         }
     }, [])
 
-    return <AppSystemOSInfoContext.Provider value={systemInfo ? { ...systemInfo, systemTime, onGetSystemOSInfo } : null}>
-        {/* 如果没有位置信息阻塞渲染 */}
-        {systemInfo && Object.keys(systemInfo).length > 0 && children}
-    </AppSystemOSInfoContext.Provider>
+    return (
+        <AppSystemOSInfoContext.Provider value={systemInfo ? { ...systemInfo, systemTime, onGetSystemOSInfo } : null}>
+            {/* 如果没有位置信息阻塞渲染 */}
+            {systemInfo && Object.keys(systemInfo).length > 0 && children}
+        </AppSystemOSInfoContext.Provider>
+    )
 }
-
 
 type SystemOSInfoHookType = AppSystemOSInfoType & {
     onGetSystemOSInfo: () => Promise<void>

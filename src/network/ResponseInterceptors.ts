@@ -2,7 +2,7 @@
  * 网络请求：axios 响应拦截器
  */
 
-import { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios'
 
 /**
  * 响应拦截器配置
@@ -11,15 +11,13 @@ import { AxiosResponse } from 'axios';
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const responseInterceptorsConfig = (response: AxiosResponse<any, unknown>) => {
+    const res = response.data
+    if (response.status === 200 && res.code === 200) {
+        return res
+    }
 
-  const res = response.data;
-  if (response.status === 200 && res.code === 200) {
-    return res;
-  }
-
-
-  return res;
-};
+    return res
+}
 
 /**
  * 响应拦截器错误处理
@@ -28,8 +26,7 @@ const responseInterceptorsConfig = (response: AxiosResponse<any, unknown>) => {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const responseInterceptorsError = (error: any) => {
+    return Promise.reject(error)
+}
 
-  return Promise.reject(error);
-};
-
-export { responseInterceptorsConfig, responseInterceptorsError };
+export { responseInterceptorsConfig, responseInterceptorsError }

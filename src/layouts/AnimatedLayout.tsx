@@ -26,7 +26,15 @@ const AnimatedLayout = ({ children }: { children: ReactNode }) => {
     const location = useLocation()
     return (
         <AnimatePresence mode="wait">
-            <motion.div className='w-full h-full t-f-center' key={location.pathname} variants={variants} initial="initial" animate="animate" exit="exit" transition={springTransition}>
+            <motion.div
+                className="w-full h-full t-f-center"
+                key={location.pathname}
+                variants={variants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={springTransition}
+            >
                 {children}
             </motion.div>
         </AnimatePresence>
