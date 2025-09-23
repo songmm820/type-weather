@@ -6,7 +6,6 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 import { getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
 import { customDayjs } from '~/libs/dateTimeLib.ts'
 import { useGeographicLocation } from '~/contexts/GeographicLocationContext.tsx'
-import { getLiveWeatherByStore, setLiveWeather } from '~/stores/WeatherStore'
 
 /** 实况天气信息类型 */
 export type LiveWeatherType = {
@@ -44,19 +43,9 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
     /**
      * 获取实况天气信息
      *
-     * 说明：这里的天气信息，每天只会获取一次。并且每天会将天气信息存入SQL，以便于数据分析。
      */
     const onGetLiveWeather = async () => {
         try {
-            // 首先从状态中获取位置信息
-            const liveWeatherStoreData = await getLiveWeatherByStore()
-            // 判断是否是今天的天气状况(因为天气信息每隔一小时获取一次)
-            const isNeedFetch = !liveWeatherStoreData || !liveWeatherStoreData?.requestTime || customDayjs().diff(customDayjs(liveWeatherStoreData?.requestTime), 'hour') >= 1
-            if (!isNeedFetch) {
-                // 如果是今天的天气状况，则直接使用存储的天气信息
-                setWeather(liveWeatherStoreData)
-                return
-            }
             // 先获取位置信息上下文中的城市adCode
             const adCode = locationCtx?.adCode
             if (!adCode) return
@@ -75,7 +64,6 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
                 requestTime: customDayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
             }
             setWeather(weather)
-            await setLiveWeather(weather)
         } catch (error) {
             throw new Error(`获取实况天气信息失败: ${error}`)
         }

@@ -6,6 +6,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 import { getCurrentVersion, getOsInfo } from '~/libs/osLib.ts'
 import { listen } from '@tauri-apps/api/event'
 import { customDayjs } from '~/libs/dateTimeLib.ts'
+import { TAURI_LISTEN } from '~/constants/TauriConstants'
 
 /** 系统信息类型 */
 export type AppSystemOSInfoType = {
@@ -62,7 +63,7 @@ export const AppSystemInfoProvider = ({ children }: { children: ReactNode }) => 
     // 初始化获取系统信息
     useEffect(() => {
         // Rust 每间隔一段时间更新客户端时间
-        const unlisten = listen<string[]>('time-update', (event) => {
+        const unlisten = listen<string[]>(TAURI_LISTEN.GET_LIVE_TIME, (event) => {
             setSystemTime(event.payload)
         })
         onGetSystemOSInfo().then()

@@ -5,7 +5,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { getAdCodeByLocationApi } from '~/apis/amap/AmapWebApis.ts'
 import { invoke } from '@tauri-apps/api/core'
-import { InvokeConstants } from '~/constants/InvokeConstants.ts'
+import { TAURI_INVOKE } from '~/constants/TauriConstants'
 
 /** 地理信息类型 */
 export type GeographicLocationType = {
@@ -41,7 +41,7 @@ export const GeographicLocationProvider = ({ children }: { children: ReactNode }
      */
     const onGetLocation = async () => {
         try {
-            const locationArr = (await invoke(InvokeConstants.GET_LOCATION)) as {
+            const locationArr = (await invoke(TAURI_INVOKE.GET_LOCATION)) as {
                 longitude: number
                 latitude: number
             }

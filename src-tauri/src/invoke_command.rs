@@ -24,7 +24,7 @@ pub fn spawn_clock(app: tauri::AppHandle) {
                 now.format("%M").to_string(), // 分
                                               // now.format("%S").to_string(), // 秒
             ];
-            let _ = app.emit("time-update", arr);
+            let _ = app.emit("get_live_time", arr);
         }
     });
 }
