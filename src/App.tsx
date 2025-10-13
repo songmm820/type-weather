@@ -2,7 +2,7 @@ import '~/styles/App.css'
 import router from '~/routers/RouterConfig.tsx'
 import { RouterProvider } from 'react-router-dom'
 import { GeographicLocationProvider } from '~/contexts/GeographicLocationProvider'
-import { AppSystemInfoProvider } from '~/contexts/AppSystemOSInfoProvider'
+import { AppSystemInfoProvider } from '~/contexts/AppSystemOSProvider'
 import { WeatherProvider } from '~/contexts/WeatherProvider'
 import { ThemeProvider } from '~/contexts/ThemeProvider'
 
