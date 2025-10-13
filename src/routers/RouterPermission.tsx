@@ -4,7 +4,7 @@
 
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getPermissionAuth } from '~/libs/permissionLib'
+import { getPermissionAuth } from '~/libs/permission'
 
 /**
  * 一个权限控制路由组件 RouterPermission

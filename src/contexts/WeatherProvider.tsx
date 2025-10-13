@@ -3,8 +3,8 @@
  */
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { getWeatherInfoByAdCodeApi } from '~/apis/amap/AmapWebApis.ts'
-import { customDayjs } from '~/libs/dateTimeLib'
+import { getWeatherInfoByAdCodeApi } from '~/apis/amap/amap-web-api'
+import { customDayjs } from '~/libs/date'
 import { useGeographicLocation } from '~/contexts/GeographicLocationProvider'
 
 /** 实况天气信息类型 */

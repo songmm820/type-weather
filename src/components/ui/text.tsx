@@ -3,7 +3,7 @@
  */
 
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '~/libs/utils'
+import { cn } from '~/libs/template-utils'
 import { type ReactNode } from 'react'
 
 const textVariants = cva('my-text', {

@@ -3,9 +3,9 @@
  */
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { getAdCodeByLocationApi } from '~/apis/amap/AmapWebApis.ts'
+import { getAdCodeByLocationApi } from '~/apis/amap/amap-web-api'
 import { invoke } from '@tauri-apps/api/core'
-import { TAURI_INVOKE } from '~/constants/TauriConstants'
+import { TAURI_INVOKE } from '~/constants/tauri-constants'
 
 /** 地理信息类型 */
 export type GeographicLocationType = {

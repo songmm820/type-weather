@@ -7,7 +7,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import IconPark from '~/components/widget/IconPark'
 import { useWeather } from '~/contexts/WeatherProvider'
 import { useGeographicLocation } from '~/contexts/GeographicLocationProvider'
-import { RouterConstants } from '~/constants/RouterConstants'
+import { RouterConstants } from '~/constants/router-constants'
 
 const MainLayout = () => {
     const location = useLocation()

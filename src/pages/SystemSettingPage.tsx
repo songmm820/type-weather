@@ -5,7 +5,7 @@
 import { ask } from '@tauri-apps/plugin-dialog'
 import { useEffect, useState } from 'react'
 import { Update } from '@tauri-apps/plugin-updater'
-import { checkUpdateOS, downloadAndInstall, getCurrentVersion } from '~/libs/osLib'
+import { checkUpdateOS, downloadAndInstall, getCurrentVersion } from '~/libs/os'
 
 const SystemSettingPage = () => {
     // 当前版本号

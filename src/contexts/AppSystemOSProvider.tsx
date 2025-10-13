@@ -3,10 +3,10 @@
  */
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { getCurrentVersion, getOsInfo } from '~/libs/osLib'
+import { getCurrentVersion, getOsInfo } from '~/libs/os'
 import { listen } from '@tauri-apps/api/event'
-import { customDayjs } from '~/libs/dateTimeLib'
-import { TAURI_LISTEN } from '~/constants/TauriConstants'
+import { customDayjs } from '~/libs/date'
+import { TAURI_LISTEN } from '~/constants/tauri-constants'
 
 /** 系统信息类型 */
 export type AppSystemOSInfoType = {
