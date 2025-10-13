@@ -3,8 +3,8 @@
  */
 
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { requestInterceptorsConfig, requestInterceptorsError } from './RequestInterceptors'
-import { responseInterceptorsConfig, responseInterceptorsError } from './ResponseInterceptors'
+import { requestInterceptorsConfig, requestInterceptorsError } from './request-interceptors'
+import { responseInterceptorsConfig, responseInterceptorsError } from './response-interceptors'
 
 // 定义基础的响应类型（默认实现）
 export interface BaseResponseData<T = unknown> {

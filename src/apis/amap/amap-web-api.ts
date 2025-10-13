@@ -2,14 +2,14 @@
  * 高德地图api请求
  */
 
-import { AxiosClientClass } from '~/network/RequestConfig.ts'
+import { AxiosClientClass } from '~/network/request-config'
 import {
     AmapWebApiIpResponse,
     AmapWebApiRegeoResponse,
     AmapWebApiResponse,
     AmapWebApiWeatherRequestParams,
     AmapWebApiWeatherResponse
-} from '~/apis/amap/AmapTypes.ts'
+} from '~/apis/amap/amap-type'
 
 /** WebApi Key */
 const WEB_API_KEY = import.meta.env.VITE_APP_MAP_KEY
